@@ -1,0 +1,4 @@
+domain/Venta.class
+domain/Producto.class
+domain/DetalleVenta.class
+domain/Dinero.class

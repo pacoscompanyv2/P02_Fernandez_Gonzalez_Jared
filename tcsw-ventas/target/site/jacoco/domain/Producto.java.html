@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Producto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tcsw-ventas</a> &gt; <a href="index.source.html" class="el_package">domain</a> &gt; <span class="el_source">Producto.java</span></div><h1>Producto.java</h1><pre class="source lang-java linenums">package domain;
+
+public class Producto {
+
+    private final String codigo;
+    private final String nombre;
+    private final double precio;
+    private int existencia;
+
+<span class="fc" id="L10">    public Producto(String codigo, String nombre, double precio, int existencia) {</span>
+        // validaciones basicas del constructor
+<span class="pc bpc" id="L12" title="2 of 4 branches missed.">        if (codigo == null || codigo.isBlank()) {</span>
+<span class="nc" id="L13">            throw new IllegalArgumentException(&quot;El codigo no puede estar vacio&quot;);</span>
+        }
+<span class="pc bpc" id="L15" title="1 of 4 branches missed.">        if (nombre == null || nombre.isBlank()) {</span>
+<span class="fc" id="L16">            throw new IllegalArgumentException(&quot;El nombre no puede estar vacio&quot;);</span>
+        }
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        if (precio &lt; 0) {</span>
+<span class="fc" id="L19">            throw new IllegalArgumentException(&quot;El precio no puede ser negativo&quot;);</span>
+        }
+<span class="fc bfc" id="L21" title="All 2 branches covered.">        if (existencia &lt; 0) {</span>
+<span class="fc" id="L22">            throw new IllegalArgumentException(&quot;La existencia no puede ser negativa&quot;);</span>
+        }
+
+<span class="fc" id="L25">        this.codigo = codigo;</span>
+<span class="fc" id="L26">        this.nombre = nombre;</span>
+<span class="fc" id="L27">        this.precio = precio;</span>
+<span class="fc" id="L28">        this.existencia = existencia;</span>
+<span class="fc" id="L29">    }</span>
+
+    public String getCodigo() {
+<span class="fc" id="L32">        return codigo;</span>
+    }
+
+    public String getNombre() {
+<span class="fc" id="L36">        return nombre;</span>
+    }
+
+    public double getPrecio() {
+<span class="fc" id="L40">        return precio;</span>
+    }
+
+    public int getExistencia() {
+<span class="fc" id="L44">        return existencia;</span>
+    }
+
+    // baja stock cuando se vende algo
+    public void descontar(int cantidad) {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (cantidad &lt;= 0) {</span>
+<span class="fc" id="L50">            throw new IllegalArgumentException(&quot;La cantidad debe ser positiva&quot;);</span>
+        }
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (cantidad &gt; existencia) {</span>
+<span class="fc" id="L53">            throw new IllegalStateException(&quot;Existencia insuficiente&quot;);</span>
+        }
+
+<span class="fc" id="L56">        existencia = existencia - cantidad;</span>
+<span class="fc" id="L57">    }</span>
+
+    // sube stock, por ejemplo cuando llega mercancia nueva
+    public void aumentar(int cantidad) {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if (cantidad &lt;= 0) {</span>
+<span class="nc" id="L62">            throw new IllegalArgumentException(&quot;La cantidad debe ser positiva&quot;);</span>
+        }
+
+<span class="nc" id="L65">        existencia = existencia + cantidad;</span>
+<span class="nc" id="L66">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
