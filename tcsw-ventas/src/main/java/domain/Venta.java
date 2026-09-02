@@ -45,12 +45,12 @@ public final class Venta {
     }
 
     public Dinero calcularTotal() {
-        Dinero total = Dinero.cero();
-        for (DetalleVenta partida : partidas) {
-            total = total.mas(partida.subtotal());
-        }
-        return total;
+    Dinero total = Dinero.cero();
+    for (DetalleVenta partida : partidas) {
+        total = total.mas(partida.subtotal());
     }
+    return total.redondeadoEntero();
+}
 
     public void cerrar() {
         if (partidas.isEmpty()) {

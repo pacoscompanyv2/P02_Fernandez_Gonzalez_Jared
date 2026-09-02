@@ -37,6 +37,11 @@ public final class Dinero {
         return new Dinero(resultado);
     }
 
+    public Dinero redondeadoEntero() {
+    BigDecimal resultado = this.monto.setScale(0, RoundingMode.HALF_UP).setScale(2, RoundingMode.HALF_UP);
+    return new Dinero(resultado);
+}
+
     public double valor() {
         return monto.doubleValue();
     }
