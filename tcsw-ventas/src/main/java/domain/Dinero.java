@@ -41,7 +41,7 @@ public final class Dinero {
         if (porcentaje < 0 || porcentaje > 100) {
             throw new IllegalArgumentException("El porcentaje debe estar entre 0 y 100");
         }
-BigDecimal factor = BigDecimal.valueOf((long) (100 - porcentaje)).divide(BigDecimal.valueOf(100));
+        BigDecimal factor = BigDecimal.valueOf(100L - porcentaje).divide(BigDecimal.valueOf(100));
         BigDecimal resultado = this.monto.multiply(factor).setScale(2, RoundingMode.HALF_UP);
         return new Dinero(resultado);
     }
