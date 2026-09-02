@@ -44,13 +44,16 @@ public final class Venta {
         partidas.add(new DetalleVenta(producto, cantidad));
     }
 
-    public Dinero calcularTotal() {
-        Dinero total = Dinero.cero();
-        for (DetalleVenta partida : partidas) {
-            total = total.mas(partida.subtotal());
-        }
-        return total;
+   public Dinero calcularTotal() {
+    Dinero total = Dinero.cero();
+    for (DetalleVenta partida : partidas) {
+        total = total.mas(partida.subtotal());
     }
+    if (partidas.size() >= 3) {
+        total = total.conDescuento(5);
+    }
+    return total;
+}
 
     public void cerrar() {
         if (partidas.isEmpty()) {
