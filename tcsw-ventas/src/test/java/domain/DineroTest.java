@@ -29,4 +29,22 @@ class DineroTest {
     void dosMontosIgualesSonIguales() {
         assertEquals(Dinero.de(100.0), Dinero.de(100.0));
     }
+        @Test
+    void aplicaDescuentoCorrectamente() {
+    Dinero monto = Dinero.de(100.00);
+    Dinero conDescuento = monto.conDescuento(10);
+    assertEquals(Dinero.de(90.00), conDescuento);
+}
+
+@Test
+    void rechazaPorcentajeDeDescuentoInvalido() {
+    Dinero monto = Dinero.de(100.00);
+    assertThrows(IllegalArgumentException.class, () -> monto.conDescuento(150));
+}
+
+@Test
+        void redondeaAlEnteroMasCercano() {
+    Dinero monto = Dinero.de(12.50);
+    assertEquals(Dinero.de(13.00), monto.redondeadoEntero());
+}
 }

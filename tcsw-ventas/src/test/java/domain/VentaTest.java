@@ -65,4 +65,25 @@ class VentaTest {
         Venta venta = new Venta("V007");
         assertTrue(!venta.isCerrada());
     }
+
+    @Test
+     void aplicaDescuentoConTresOMasPartidas() {
+    Producto p = new Producto("A1", "Articulo", 10.00, 100);
+    Venta venta = new Venta("F-001");
+    venta.agregarPartida(p, 1);
+    venta.agregarPartida(p, 1);
+    venta.agregarPartida(p, 1);
+    // subtotal 30.00, -5% = 28.50, redondeado = 29.00
+    assertEquals(Dinero.de(29.00), venta.calcularTotal());
+}
+
+@Test
+      void noAplicaDescuentoConMenosDeTresPartidas() {
+    Producto p = new Producto("A1", "Articulo", 10.20, 100);
+    Venta venta = new Venta("F-002");
+    venta.agregarPartida(p, 1);
+    venta.agregarPartida(p, 1);
+    // subtotal 20.40, sin descuento, redondeado = 20.00
+    assertEquals(Dinero.de(20.00), venta.calcularTotal());
+}
 }
