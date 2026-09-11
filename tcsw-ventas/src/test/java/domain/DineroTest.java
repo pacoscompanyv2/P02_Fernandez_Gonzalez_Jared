@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.math.BigDecimal;
+
 class DineroTest {
 
     @Test
@@ -46,5 +48,11 @@ class DineroTest {
         void redondeaAlEnteroMasCercano() {
     Dinero monto = Dinero.de(12.50);
     assertEquals(Dinero.de(13.00), monto.redondeadoEntero());
+}
+@Test
+void aplicaRecargoCorrectamente() {
+    Dinero dinero = Dinero.de(100.00);
+    Dinero resultado = dinero.aplicarRecargo(new BigDecimal("15.00"));
+    assertEquals(Dinero.de(115.00), resultado);
 }
 }
