@@ -55,6 +55,7 @@ public final class Venta {
         return total.redondeadoEntero();
     }
 
+
     public void cerrar() {
         if (partidas.isEmpty()) {
             throw new IllegalStateException("No se puede cerrar una venta sin partidas");
@@ -62,4 +63,11 @@ public final class Venta {
 
         cerrada = true;
     }
+
+    public void cancelarPartida(int indice) {
+       if (indice < 0 || indice >= partidas.size()) {
+           throw new IndexOutOfBoundsException("Indice de partida invalido");
+       }
+       partidas.remove(indice);
+   }
 }

@@ -86,4 +86,25 @@ class VentaTest {
     // subtotal 20.40, sin descuento, redondeado = 20.00
     assertEquals(Dinero.de(20.00), venta.calcularTotal());
 }
+
+@Test
+void cancelaPartidaCorrectamente() {
+    Producto producto = new Producto("P025", "Producto prueba", 100.0, 10);
+    Venta venta = new Venta("V008");
+
+    venta.agregarPartida(producto, 2);
+    venta.cancelarPartida(0);
+
+    assertEquals(0, venta.getPartidas().size());
+}
+
+@Test
+void rechazaIndicePartidaInvalido() {
+    Venta venta = new Venta("V009");
+
+    assertThrows(IndexOutOfBoundsException.class,
+        () -> venta.cancelarPartida(0));
+}
+
+
 }
