@@ -4,7 +4,7 @@ public class Producto {
 
     private final String codigo;
     private final String nombre;
-    private final double precio;
+    private double precio;
     private int existencia;
 
     public Producto(String codigo, String nombre, double precio, int existencia) {
@@ -64,4 +64,13 @@ public class Producto {
 
         existencia = existencia + cantidad;
     }
+
+    // actualiza el precio
+    public void actualizarPrecio(double nuevoPrecio) {
+       if (nuevoPrecio <= 0) {
+           throw new IllegalArgumentException("El precio debe ser mayor a cero");
+       }
+       this.precio = nuevoPrecio;
+   }
+
 }
