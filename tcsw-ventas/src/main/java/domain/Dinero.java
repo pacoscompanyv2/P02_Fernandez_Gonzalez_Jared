@@ -76,4 +76,13 @@ public final class Dinero {
     public String toString() {
         return monto.toString();
     }
+
+       public Dinero aplicarRecargo(BigDecimal recargo) {
+       if (recargo.compareTo(BigDecimal.ZERO) < 0) {
+           throw new IllegalArgumentException("El recargo no puede ser negativo");
+       }
+       return new Dinero(this.monto.add(recargo));
+   }
+
+   
 }
