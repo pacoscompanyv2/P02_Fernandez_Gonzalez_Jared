@@ -59,4 +59,18 @@ class ProductoTest {
         assertThrows(IllegalStateException.class, () -> p.descontar(10));
         assertEquals(6, p.getExistencia());
     }
+
+    @Test
+    void actualizaPrecioCorrectamente() {
+        Producto producto = new Producto("P009", "Camisa", 200.00, 5);
+        producto.actualizarPrecio(250.00);
+        assertEquals(250.00, producto.getPrecio());
+    }
+
+    @Test
+    void rechazaPrecioCeroONegativo() {
+        Producto producto = new Producto("P010", "Camisa", 200.00, 5);
+        assertThrows(IllegalArgumentException.class,
+            () -> producto.actualizarPrecio(0.00));
+    }
 }
