@@ -1,21 +1,25 @@
 # Contribucion - Integrante 2
 
-**Nombre:** Suriel Francisco Tecpile
-**GitHub:** SurielFrancisco
+*Nombre:* Suriel Francisco Tecpile
+
+*GitHub:* SurielFrancisco
 
 ## Issue
-- **#2** - Agregar Producto.actualizarPrecio(double)
-- Criterio de cierre: metodo con validacion y pruebas en verde, PR mergeado
+•⁠  ⁠*#10* - Implementar RegistrarVentaService sin infraestructura
+•⁠  ⁠Criterio de cierre: caso de uso implementado con pruebas de exito y error en verde, PR mergeado a main
 
 ## Rama y commits
-- Rama vinculada: `2-actualizar-precio`
-- Commit: `c05bf3d38671545879e017f5b0b0f3441b120ed0` - feat: actualizar precio de Producto con validacion (#2)
+•⁠  ⁠Rama vinculada: ⁠ 10-implementar-registrarventaservice-sin-infraestructura
+•⁠  ⁠Commit: feat: implementar RegistrarVentaService sin infraestructura (#10)
 
 ## Pull Request y revision
-- PR #5 - "feat: actualizar precio de Producto con validacion (#2)" - Closes #2
-- Mergeado por: Jared Fernandez Gonzalez (commit de merge ba59f26)
+•⁠  ⁠PR #11 - "feat: implementar RegistrarVentaService sin infraestructura (#10)" Closes #10
+•⁠  ⁠Revisado y mergeado por: Jesus Armando Andres Tablilla
 
 ## Pruebas
-- `mvn clean test` -> 33/33 pruebas en verde (incluye actualizaPrecioCorrectamente y rechazaPrecioCeroONegativo)
-- Caso normal: actualiza el precio correctamente
-- Caso error: rechaza precio cero o negativo (IllegalArgumentException)
+•⁠  ⁠⁠ mvn clean test ⁠ -> 35/35 pruebas en verde
+•⁠  ⁠Caso normal: registraVentaCorrectamente
+•⁠  ⁠Caso error: rechazaProductoInexistente (IllegalArgumentException)
+
+## Identificador final
+•⁠  ⁠ID (commit): 97d181c7eeee2f9c525fad2bbdbd0b1eadb00dee
