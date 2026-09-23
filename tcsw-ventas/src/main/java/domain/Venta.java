@@ -1,5 +1,6 @@
 package domain;
-
+import domain.descuento.DescuentoStrategy;
+import domain.descuento.DescuentoPorMayoreo;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,18 +9,22 @@ import java.util.List;
 public final class Venta {
 
     private final String folio;
-    private final List<DetalleVenta> partidas;
-    private boolean cerrada;
+private final List<DetalleVenta> partidas;
+private boolean cerrada;
+private final DescuentoStrategy descuento;
+public Venta(String folio) {
+    this(folio, new DescuentoPorMayoreo());
+}
 
-    public Venta(String folio) {
-        if (folio == null || folio.isBlank()) {
-            throw new IllegalArgumentException("El folio no puede estar vacio");
-        }
-
-        this.folio = folio;
-        this.partidas = new ArrayList<>();
-        this.cerrada = false;
+public Venta(String folio, DescuentoStrategy descuento) {
+    if (folio == null || folio.isBlank()) {
+        throw new IllegalArgumentException("El folio no puede estar vacio");
     }
+    this.folio = folio;
+    this.partidas = new ArrayList<>();
+    this.cerrada = false;
+    this.descuento = descuento;
+}
 
     public String getFolio() {
         return folio;
@@ -44,17 +49,14 @@ public final class Venta {
         partidas.add(new DetalleVenta(producto, cantidad));
     }
 
-    public Dinero calcularTotal() {
-        Dinero total = Dinero.cero();
-        for (DetalleVenta partida : partidas) {
-            total = total.mas(partida.subtotal());
-        }
-        if (partidas.size() >= 3) {
-            total = total.conDescuento(5);
-        }
-        return total.redondeadoEntero();
+  public Dinero calcularTotal() {
+    Dinero total = Dinero.cero();
+    for (DetalleVenta partida : partidas) {
+        total = total.mas(partida.subtotal());
     }
-
+    total = descuento.aplicar(total, partidas.size());
+    return total.redondeadoEntero();
+}
 
     public void cerrar() {
         if (partidas.isEmpty()) {
