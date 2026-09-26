@@ -2,6 +2,7 @@ package arch;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
+import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.lang.ArchRule;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +13,9 @@ class ArquitecturaHexagonalTest {
     // el dominio jamas debe conocer application ni adapter: esta regla truena si alguien lo rompe
     @Test
     void elDominioNoDependeDeApplicationNiDeAdapter() {
-        JavaClasses clases = new ClassFileImporter().importPackages("domain", "application", "adapter");
+        JavaClasses clases = new ClassFileImporter()
+        .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
+        .importPackages("domain", "application", "adapter");
 
         ArchRule regla = noClasses().that().resideInAPackage("domain..")
             .should().dependOnClassesThat().resideInAnyPackage("application..", "adapter..");
@@ -23,7 +26,9 @@ class ArquitecturaHexagonalTest {
     // application orquesta con interfaces, no debe atarse a un adaptador concreto
     @Test
     void applicationNoDependeDeAdapter() {
-        JavaClasses clases = new ClassFileImporter().importPackages("domain", "application", "adapter");
+        JavaClasses clases = new ClassFileImporter()
+        .withImportOption(ImportOption.Predefined.DO_NOT_INCLUDE_TESTS)
+        .importPackages("domain", "application", "adapter");
 
         ArchRule regla = noClasses().that().resideInAPackage("application..")
             .should().dependOnClassesThat().resideInAPackage("adapter..");
