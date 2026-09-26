@@ -6,6 +6,8 @@ import application.port.out.ProductoRepository;
 import application.port.out.VentaRepository;
 import domain.Producto;
 import domain.Venta;
+import application.observer.VentaObserver;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -13,6 +15,7 @@ public class RegistrarVentaService implements RegistrarVentaUseCase {
 
     private final ProductoRepository productos;
     private final VentaRepository ventas;
+    private final List<VentaObserver> observers = new ArrayList<>();
 
     public RegistrarVentaService(ProductoRepository productos, VentaRepository ventas) {
         this.productos = productos;
@@ -29,6 +32,13 @@ public class RegistrarVentaService implements RegistrarVentaUseCase {
             venta.agregarPartida(producto, item.getCantidad());
         }
         ventas.guardar(venta);
+        for (VentaObserver observer : observers) {
+            observer.onVentaRegistrada(venta);
+        }
         return venta;
+    }
+
+    public void agregarObserver(VentaObserver observer) {
+        observers.add(observer);
     }
 }
