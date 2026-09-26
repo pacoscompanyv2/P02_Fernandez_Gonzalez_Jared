@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -53,4 +54,36 @@ class RegistrarVentaServiceTest {
         assertThrows(IllegalArgumentException.class,
             () -> service.registrar("F2", List.of(new ItemVenta("NO-EXISTE", 1))));
     }
+
+    @Test
+    void notificaAlObserverCuandoRegistraConExito() {
+        ProductoRepositoryFalso productos = new ProductoRepositoryFalso();
+        productos.agregar(new Producto("P1", "Playera", 100.0, 10));
+        VentaRepositoryFalso ventas = new VentaRepositoryFalso();
+        RegistrarVentaService service = new RegistrarVentaService(productos, ventas);
+
+        List<String> notificados = new ArrayList<>();
+        service.agregarObserver(venta -> notificados.add(venta.getFolio()));
+
+        service.registrar("F-OBS-1", List.of(new ItemVenta("P1", 1)));
+
+        assertEquals(1, notificados.size());
+        assertEquals("F-OBS-1", notificados.get(0));
+    }
+
+    @Test
+    void noNotificaAlObserverSiElRegistroFalla() {
+        ProductoRepositoryFalso productos = new ProductoRepositoryFalso();
+        VentaRepositoryFalso ventas = new VentaRepositoryFalso();
+        RegistrarVentaService service = new RegistrarVentaService(productos, ventas);
+
+        List<String> notificados = new ArrayList<>();
+        service.agregarObserver(venta -> notificados.add(venta.getFolio()));
+
+        assertThrows(IllegalArgumentException.class,
+            () -> service.registrar("F-OBS-2", List.of(new ItemVenta("NO-EXISTE", 1))));
+
+        assertEquals(0, notificados.size());
+    }
+
 }
