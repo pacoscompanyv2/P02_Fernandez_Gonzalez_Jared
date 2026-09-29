@@ -1,6 +1,8 @@
 package domain.descuento;
 
 public class DescuentoStrategyFactory {
+    private DescuentoStrategyFactory() {
+}
 
     public static DescuentoStrategy crear(String tipo) {
         switch (tipo) {
