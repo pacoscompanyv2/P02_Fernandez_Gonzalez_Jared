@@ -1,10 +1,11 @@
 package application.port.out;
 
 import domain.Producto;
+import java.util.List;
 import java.util.Optional;
 
-// puerto de salida: lo que el caso de uso necesita para consultar productos
 public interface ProductoRepository {
-    Optional<Producto> buscarPorCodigo(String codigo);
     void guardar(Producto producto);
+    Optional<Producto> buscarPorCodigo(String codigo);
+    List<Producto> listarTodos();
 }
