@@ -4,12 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CarritoPanel extends JPanel {
-    private final VentasController controller;
+    private final transient VentasController controller;
     private final CarritoTableModel modelo;
     private final JTable tabla;
     private final JTextField campoFolio;
     private final JButton botonRegistrar;
-    private Runnable alRegistrarVenta;
+    private transient Runnable alRegistrarVenta;
 
     public CarritoPanel(VentasController controller) {
         this.controller = controller;

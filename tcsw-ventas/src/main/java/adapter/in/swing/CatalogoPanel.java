@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CatalogoPanel extends JPanel {
-    private final VentasController controller;
+    private final transient VentasController controller;
     private final ProductoTableModel modelo;
     private final JTable tabla;
     private final JSpinner spinnerCantidad;
-    private final Runnable onProductoAgregado;
+    private final transient Runnable onProductoAgregado;
 
     public CatalogoPanel(VentasController controller, Runnable onProductoAgregado) {
         this.controller = controller;

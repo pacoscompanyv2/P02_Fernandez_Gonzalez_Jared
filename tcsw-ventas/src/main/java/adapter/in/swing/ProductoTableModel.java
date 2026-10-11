@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ProductoTableModel extends AbstractTableModel {
     private final String[] columnas = {"Codigo", "Nombre", "Precio", "Existencia"};
-    private List<Producto> productos;
+    private transient List<Producto> productos;
 
     public ProductoTableModel(List<Producto> productos) {
         this.productos = productos != null ? productos : new ArrayList<>();

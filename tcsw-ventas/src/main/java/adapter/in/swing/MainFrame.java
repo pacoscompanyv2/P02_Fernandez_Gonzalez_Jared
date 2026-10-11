@@ -6,7 +6,7 @@ import java.awt.*;
 public class MainFrame extends JFrame {
     public MainFrame(VentasController controller) {
         super("tcsw-ventas - Cliente Swing");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setSize(750, 500);
         setLocationRelativeTo(null);
 

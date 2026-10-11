@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CarritoTableModel extends AbstractTableModel {
     private final String[] columnas = {"Producto", "Cantidad"};
-    private List<ItemVenta> items;
+    private transient List<ItemVenta> items;
 
     public CarritoTableModel(List<ItemVenta> items) {
         this.items = items != null ? items : new ArrayList<>();
