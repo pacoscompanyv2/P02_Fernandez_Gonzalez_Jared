@@ -36,7 +36,7 @@
 
 ## Pull Request y revision
 - PR: #24 - Closes #23
-- Revision: Jesús 
+- Revision: Jesús (revisor asignado; el PR no tiene comentario de revisión en GitHub)
 
 ## Identificador final
 - ID (commit de mi parte): `0ee797915e5711106fc1de46979bb502cc1b9fe3`
