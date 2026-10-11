@@ -47,8 +47,8 @@
 
 ## Pull Request y revision
 - PR: #22 - "feat: controlador base Swing y listado de productos (#21)" - Closes #21
-- Revision: Suriel (<comentario o aprobacion; completar tras la revision>)
+- Revision: Suriel
 
 ## Identificador final
-- ID (commit de mi parte): `62f1518`
-- Commit o tag final del equipo: `<TAG_O_COMMIT_FINAL>`
+- ID  `62f1518`
+- Commit o tag final del equipo: P07 Cliente Swing - entrega final
