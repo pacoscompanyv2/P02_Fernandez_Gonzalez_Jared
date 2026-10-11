@@ -54,32 +54,43 @@ El `pom.xml` compila con `maven.compiler.source/target = 11`.
 
     git clone https://github.com/pacoscompanyv2/P02_Fernandez_Gonzalez_Jared
     cd P02_Fernandez_Gonzalez_Jared/tcsw-ventas
-    git checkout 1-swing-controlador-base
+    git checkout v0.2-swing
     mvn clean test
 
-Resultado esperado (rama 1-swing-controlador-base, parte del integrante 1):
-Tests run: 69, Failures: 0, Errors: 0, BUILD SUCCESS.
-
-El conteo del equipo cambia al integrar las ramas 2-swing-catalogo y 3-swing-carrito-registro.
-Al cerrar P07 se debe actualizar aqui el numero final y el commit o tag de entrega:
-`<NUMERO_FINAL_DE_PRUEBAS>` pruebas, commit/tag `<TAG_O_COMMIT_FINAL>`.
+Resultado esperado: Tests run: 85, Failures: 0, Errors: 0, BUILD SUCCESS.
 
 ## Ejecutar la aplicacion
-Con la rama integrada (MainFrame de la rama 3):
 
     mvn clean compile
     java -cp target/classes adapter.in.swing.Main
 
-En la rama del integrante 1 el `Main` solo inicializa el controlador e imprime
-"Cliente Swing inicializado con 3 productos." (la ventana la aporta el integrante 3).
+Abre la ventana "tcsw-ventas - Cliente Swing" con 3 productos de ejemplo. Requiere entorno grafico.
+
+## Analisis de calidad (opcional, requiere SonarQube corriendo)
+
+    mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+      -Dsonar.projectKey=TCSW-VENTAS-p07 -Dsonar.host.url=http://localhost:9000 \
+      -Dsonar.token=<tu-token>
+
+Resultado de referencia: Quality Gate Passed (17 issues en el primer analisis, 10 despues de atender `java:S1948`).
 
 ## Estructura Swing
 - adapter/in/swing/VentasController.java - logica de interfaz; valida entradas y delega en la fachada, sin reglas de negocio
-- adapter/in/swing/ProductoTableModel.java, CatalogoPanel.java - catalogo (integrante 2)
-- adapter/in/swing/CarritoTableModel.java, CarritoPanel.java, RegistrarVentaWorker.java, MainFrame.java - carrito, registro con SwingWorker y ventana (integrante 3)
-- application/facade/VentasFacade.java - punto de entrada; delega el registro al caso de uso
-- application/service/RegistrarVentaService.java - caso de uso: valida existencias antes de descontar, descuento inyectable
+- adapter/in/swing/ProductoTableModel.java, CatalogoPanel.java - catalogo
+- adapter/in/swing/CarritoTableModel.java, CarritoPanel.java, RegistrarVentaWorker.java, MainFrame.java - carrito, registro con SwingWorker y ventana
+- adapter/in/swing/Main.java - raiz de composicion (repositorios en memoria, fachada, controlador, ventana)
+- application/facade/VentasFacade.java - punto de entrada; delega el registro en el caso de uso
+- application/service/RegistrarVentaService.java - caso de uso: valida existencias antes de descontar; descuento inyectable
 
 ## Documentos de P07
 - docs/adr/ADR-005-facade-delega-en-caso-de-uso.md - decision de arquitectura
-- docs/contribuciones/integrante-1-P07.md - contribucion individual del integrante 1
+- docs/contribuciones/integrante-1-P07.md, integrante-2-P07.md, integrante-3-P07.md - contribucion individual
+- docs/indice-evidencias-P07.md - evidencia por criterio de R01
+- docs/bitacora-p07.md - bitacora de ejecucion y errores
+- docs/protocolo-visual-P07.md - recorrido visual
+- docs/capturas/ - capturas del recorrido y de Sonar
+
+## Limites conocidos
+- Las vistas Swing no tienen pruebas automaticas (cobertura 66.1% en Sonar).
+- Repositorios en memoria: sin persistencia ni concurrencia.
+- El carrito del controlador no es seguro ante hilos.
