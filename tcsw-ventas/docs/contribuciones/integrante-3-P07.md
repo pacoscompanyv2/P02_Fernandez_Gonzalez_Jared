@@ -44,8 +44,8 @@
 - NO_VERIFICADO: Sonar para P07.
 
 ## Pull Request y revision
-- PR: # - Closes #
-- Revision: <REVISOR> (<comentario o aprobacion>)
+- PR: 25
+- Revision: Jared
 
 ## Identificador final
 - ID (commit de mi parte): `b3037bb`
