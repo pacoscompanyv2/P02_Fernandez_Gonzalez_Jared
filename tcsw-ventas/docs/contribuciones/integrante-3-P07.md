@@ -9,7 +9,7 @@
 - Criterio de cierre: existen `CarritoPanel`, `RegistrarVentaWorker` y `MainFrame` integrando todo el sistema en una ventana interactiva.
 
 ## Rama y commits
-- Rama: `3-swing-carrito-registro`
+- Rama: `25-carrito-registro-de-venta-con-swingworker-y-ventana-principal`
 - Commit: `b3037bb` - feat: carrito, registro con SwingWorker y ventana principal (#)
 
 ## Decision de arquitectura

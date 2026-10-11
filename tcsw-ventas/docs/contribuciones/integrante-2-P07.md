@@ -9,7 +9,7 @@
 - Criterio de cierre: existen `CatalogoPanel` y `ProductoTableModel` funcionales que listan productos y permiten agregar al carrito con validacion de cantidad.
 
 ## Rama y commits
-- Rama: `2-swing-catalogo`
+- Rama: `23-vista-de-catalogo-en-swing`
 - Commit: `0ee7979` - feat: vista de catalogo en Swing (#23)
 
 ## Decision de arquitectura
