@@ -1,0 +1,27 @@
+# PostgreSQL 16 para P08. Uso:  cp .env.example .env  (cambia la clave)  y luego  docker compose up -d --wait
+name: tcsw-ventas
+
+services:
+  db:
+    image: postgres:16
+    container_name: tcsw-ventas-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:?define POSTGRES_DB en .env}
+      POSTGRES_USER: ${POSTGRES_USER:?define POSTGRES_USER en .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?define POSTGRES_PASSWORD en .env}
+    ports:
+      # solo escucha en tu maquina (127.0.0.1); si el 5432 esta ocupado cambia POSTGRES_PORT y TCSW_DB_URL
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - tcsw_pgdata:/var/lib/postgresql/data
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./db/02-base-pruebas.sh:/docker-entrypoint-initdb.d/02-base-pruebas.sh:ro
+    healthcheck:
+      # -h 127.0.0.1 fuerza TCP: el servidor temporal de arranque solo escucha por socket, asi no se reporta "listo" antes de tiempo
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+volumes:
+  tcsw_pgdata:
