@@ -1,0 +1,105 @@
+# Salida PostgreSQL sanitizada - P08 (datos sinteticos)
+# Generado (UTC): 2026-10-24T03:43:22Z
+
+## 1. Version del servidor
+                                                          version                                                           
+----------------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+(1 row)
+
+## 2. Tablas del esquema
+             List of relations
+ Schema |     Name      | Type  |  Owner   
+--------+---------------+-------+----------
+ public | detalle_venta | table | tcsw_app
+ public | producto      | table | tcsw_app
+ public | venta         | table | tcsw_app
+(3 rows)
+
+## 3. Estructura y restricciones
+                       Table "public.producto"
+   Column   |          Type          | Collation | Nullable | Default 
+------------+------------------------+-----------+----------+---------
+ codigo     | character varying(20)  |           | not null | 
+ nombre     | character varying(100) |           | not null | 
+ precio     | numeric(10,2)          |           | not null | 
+ existencia | integer                |           | not null | 
+Indexes:
+    "producto_pkey" PRIMARY KEY, btree (codigo)
+Check constraints:
+    "ck_producto_codigo_no_vacio" CHECK (length(TRIM(BOTH FROM codigo)) > 0)
+    "ck_producto_nombre_no_vacio" CHECK (length(TRIM(BOTH FROM nombre)) > 0)
+    "producto_existencia_check" CHECK (existencia >= 0)
+    "producto_precio_check" CHECK (precio >= 0::numeric)
+Referenced by:
+    TABLE "detalle_venta" CONSTRAINT "detalle_venta_codigo_fkey" FOREIGN KEY (codigo) REFERENCES producto(codigo)
+
+                         Table "public.venta"
+  Column   |           Type           | Collation | Nullable | Default 
+-----------+--------------------------+-----------+----------+---------
+ folio     | character varying(30)    |           | not null | 
+ total     | numeric(12,2)            |           | not null | 
+ cerrada   | boolean                  |           | not null | false
+ creada_en | timestamp with time zone |           | not null | now()
+Indexes:
+    "venta_pkey" PRIMARY KEY, btree (folio)
+Check constraints:
+    "ck_venta_folio_no_vacio" CHECK (length(TRIM(BOTH FROM folio)) > 0)
+    "venta_total_check" CHECK (total >= 0::numeric)
+Referenced by:
+    TABLE "detalle_venta" CONSTRAINT "detalle_venta_folio_fkey" FOREIGN KEY (folio) REFERENCES venta(folio) ON DELETE CASCADE
+
+                       Table "public.detalle_venta"
+     Column      |         Type          | Collation | Nullable | Default 
+-----------------+-----------------------+-----------+----------+---------
+ folio           | character varying(30) |           | not null | 
+ linea           | integer               |           | not null | 
+ codigo          | character varying(20) |           | not null | 
+ cantidad        | integer               |           | not null | 
+ precio_unitario | numeric(10,2)         |           | not null | 
+Indexes:
+    "detalle_venta_pkey" PRIMARY KEY, btree (folio, linea)
+    "ix_detalle_venta_codigo" btree (codigo)
+Check constraints:
+    "detalle_venta_cantidad_check" CHECK (cantidad > 0)
+    "detalle_venta_linea_check" CHECK (linea > 0)
+    "detalle_venta_precio_unitario_check" CHECK (precio_unitario >= 0::numeric)
+Foreign-key constraints:
+    "detalle_venta_codigo_fkey" FOREIGN KEY (codigo) REFERENCES producto(codigo)
+    "detalle_venta_folio_fkey" FOREIGN KEY (folio) REFERENCES venta(folio) ON DELETE CASCADE
+
+## 4. Datos persistidos por la aplicacion
+ codigo | nombre | precio | existencia 
+--------+--------+--------+------------
+(0 rows)
+
+ folio | total | cerrada 
+-------+-------+---------
+(0 rows)
+
+ folio | linea | codigo | cantidad | precio_unitario 
+-------+-------+--------+----------+-----------------
+(0 rows)
+
+## 5. Rechazo de estado invalido (cada intento va en una transaccion que se revierte; no cambia datos)
+-- 5.1 existencia negativa (CHECK)
+BEGIN
+ERROR:  new row for relation "producto" violates check constraint "producto_existencia_check"
+DETAIL:  Failing row contains (NEG1, Prueba, 10.00, -1).
+ROLLBACK
+-- 5.2 codigo mas largo que la columna
+BEGIN
+ERROR:  value too long for type character varying(20)
+ROLLBACK
+-- 5.3 partida de un producto que no existe (llave foranea)
+BEGIN
+INSERT 0 1
+ERROR:  insert or update on table "detalle_venta" violates foreign key constraint "detalle_venta_codigo_fkey"
+DETAIL:  Key (codigo)=(NO-EXISTE) is not present in table "producto".
+ROLLBACK
+-- 5.4 despues del ROLLBACK no quedo nada
+ ventas_demo 
+-------------
+           0
+(1 row)
+
