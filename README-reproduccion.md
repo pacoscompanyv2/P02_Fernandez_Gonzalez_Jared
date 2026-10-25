@@ -175,7 +175,7 @@ se conserva. Sin las variables `TCSW_DB_*` imprime `Almacenamiento: memoria` y t
 ## 11. Analisis de calidad (SonarQube local)
 
     mvn clean verify -Pintegracion org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-      -Dsonar.projectKey=TCSW-VENTAS-p08 -Dsonar.host.url=http://localhost:9000 \
+      -Dsonar.projectKey=P08-VENTAS -Dsonar.host.url=http://localhost:9000 \
       -Dsonar.token=<tu-token>
 
 (El token se genera en tu SonarQube y NUNCA se pega en el repositorio ni en capturas.)
@@ -190,8 +190,8 @@ se conserva. Sin las variables `TCSW_DB_*` imprime `Almacenamiento: memoria` y t
 
 | Comprobacion | Estado | Evidencia |
 |---|---|---|
-| `mvn clean test` (unitarias, sin Docker) | PENDIENTE | numero real en la bitacora P08 |
-| `docker compose up -d --wait` | PENDIENTE | salida en la bitacora P08 |
-| `mvn clean verify -Pintegracion` (pruebas *IT en PostgreSQL 16) | PENDIENTE | reportes de failsafe |
-| Aplicacion Swing con PostgreSQL (venta que sobrevive al reinicio) | PENDIENTE | captura + salida de `evidencia-postgres.sh` |
-| Analisis Sonar | PENDIENTE | captura Overall Code |
+| `mvn clean test` (unitarias, sin Docker) | VERIFICADO | 101 pruebas, 0 fallos, 0 errores (24-oct, main ac92607); ver docs/bitacora-p08.md |
+| `docker compose up -d --wait` | VERIFICADO | contenedor tcsw-ventas-db Healthy; ver docs/bitacora-p08.md |
+| `mvn clean verify -Pintegracion` (pruebas *IT en PostgreSQL 16) | VERIFICADO | 27 pruebas, 0 fallos, 0 errores (24-oct, main ac92607) |
+| Aplicacion Swing con PostgreSQL (venta que sobrevive al reinicio) | VERIFICADO (equipo de Jesus); reproduccion propia NO_VERIFICADO | capturas de Jesus y docs/protocolo-visual-P08.md |
+| Analisis Sonar | VERIFICADO | proyecto P08-VENTAS, Quality Gate Passed, captura Overall Code |

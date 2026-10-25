@@ -9,8 +9,8 @@
 - Criterio de cierre: `VentaRepositoryJdbc` guarda venta, partidas y existencias en una sola transaccion (rollback comprobado); `RepositoriosFactory` conecta `Main` a PostgreSQL con respaldo en memoria; pruebas `VentaRepositoryJdbcTransaccionTest`, `VentaRepositoryJdbcIT` y `VentasFacadeJdbcIT` en verde; PR integrado a main
 
 ## Rama y commits
-- Rama: `jdbc-ventas-transaccion`
-- Commit de codigo: `7fd9922` - feat: VentaRepositoryJdbc con transaccion y Main con PostgreSQL (#31)
+- Rama: `3-jdbc-ventas-transaccion`
+- Commit de codigo: `7fd9922` - feat: VentaRepositoryJdbc con transaccion y Main con PostgreSQL
 - Commit de documentacion: ver historial del PR #32
 
 ## Decision tecnica
@@ -27,9 +27,9 @@
 - Pruebas: `VentaRepositoryJdbcTransaccionTest` (5, sin Docker), `VentaRepositoryJdbcIT` (9), `VentasFacadeJdbcIT` (4)
 
 ## Pull Request y revision
-- PR #32 - "feat: VentaRepositoryJdbc con transaccion y Main con PostgreSQL (#31)" - Closes #31
+- PR #32 - "feat: VentaRepositoryJdbc con transaccion y Main con PostgreSQL" - Closes #31
 - Revisor asignado: Jared Fernandez Gonzalez
-- Comentario de revision explicito en GitHub antes del merge: [E_REV]
+- Comentario de revision explicito en GitHub antes del merge: NO_VERIFICADO (PR #32 mergeado sin comentario de revision en GitHub)
 
 ## Pruebas
 - Unitarias (`mvn clean test`): 101 pruebas, 0 fallos, 0 errores
@@ -42,12 +42,12 @@
 | Elemento | Referencia | Estado |
 |---|---|---|
 | Issue | #31 | VERIFICADO |
-| Rama | `jdbc-ventas-transaccion` | VERIFICADO |
+| Rama | `3-jdbc-ventas-transaccion` | VERIFICADO |
 | Commit de codigo | `7fd9922` | VERIFICADO |
 | Pull Request | #32 (Closes #31) | VERIFICADO |
 | Pruebas unitarias | 101 en verde | VERIFICADO |
 | Pruebas de integracion en PostgreSQL 16 | 27 en verde | VERIFICADO |
-| Comentario de revision antes del merge | revisor: Jared | [E_REV] |
+| Comentario de revision antes del merge | revisor asignado: Jared (sin comentario en GitHub) | NO_VERIFICADO |
 
 ## Limitaciones declaradas
 - Concurrencia: la existencia se escribe como valor absoluto; dos clientes vendiendo a la vez podrian pisarse (ver ADR-006)

@@ -31,7 +31,7 @@
 ## Pull Request y revision
 - PR #27 - "feat: base de persistencia PostgreSQL y ProductoRepositoryJdbc (#28)" - Closes #28
 - Revisor asignado: Suriel Francisco Tecpile
-- Comentario de revision explicito en GitHub antes del merge: VERIFICADO
+- Comentario de revision explicito en GitHub antes del merge: NO_VERIFICADO (PR #27 mergeado por Jesus sin comentario de revision en GitHub)
 
 ## Pruebas
 - Unitarias (`mvn clean test`, no requieren Docker): 96 pruebas, 0 fallos, 0 errores
@@ -48,7 +48,7 @@
 | Pull Request | #27 (Closes #28) | VERIFICADO |
 | Pruebas unitarias | 96 en verde | VERIFICADO |
 | Pruebas de integracion en PostgreSQL 16 | 3 en verde | VERIFICADO |
-| Comentario de revision antes del merge | revisor: Suriel | VERIFICADO |
+| Comentario de revision antes del merge | revisor asignado: Suriel (sin comentario en GitHub) | NO_VERIFICADO |
 
 ## Limitaciones declaradas
 - No hay pool de conexiones: cada operacion abre y cierra su conexion (ver ADR-006)
