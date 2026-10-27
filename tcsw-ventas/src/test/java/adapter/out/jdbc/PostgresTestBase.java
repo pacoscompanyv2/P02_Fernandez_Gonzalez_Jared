@@ -12,12 +12,12 @@ import java.sql.SQLException;
 // y necesitan PostgreSQL arriba (docker compose up -d --wait) y las variables de .env exportadas.
 // trabajan SOLO contra la base *_test: el TRUNCATE nunca toca los datos de la aplicacion.
 @Tag("integracion")
-abstract class PostgresTestBase {
+public abstract class PostgresTestBase {
 
     protected ConfiguracionJdbc conexion;
 
     @BeforeEach
-    void prepararBaseDePruebas() throws SQLException {
+    protected void prepararBaseDePruebas() throws SQLException {
         ConfiguracionJdbc base = ConfiguracionJdbc.desdeEntorno();
         String urlPruebas = System.getenv("TCSW_TEST_DB_URL");
         if (urlPruebas == null || urlPruebas.isBlank()) {
