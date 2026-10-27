@@ -18,6 +18,11 @@ public class MainFrame extends JFrame {
         JSplitPane split = new JSplitPane(JSplitPane.VERTICAL_SPLIT, catalogoPanel, carritoPanel);
         split.setResizeWeight(0.5);
 
-        add(split, BorderLayout.CENTER);
+        // C02: dos pestanas. "Vender" es la pantalla de siempre; "Consultar venta" lee lo que ya esta guardado
+        JTabbedPane pestanas = new JTabbedPane();
+        pestanas.addTab("Vender", split);
+        pestanas.addTab("Consultar venta", new ConsultaVentaPanel(controller));
+
+        add(pestanas, BorderLayout.CENTER);
     }
 }

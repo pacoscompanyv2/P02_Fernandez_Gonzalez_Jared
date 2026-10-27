@@ -48,6 +48,11 @@ public class VentasFacade {
         return registrarVentaService.registrar(folio, items);
     }
 
+    // consulta de una venta ya registrada (C02): lee del puerto, no toca existencias
+    public Optional<Venta> buscarVenta(String folio) {
+        return ventaRepository.buscarPorFolio(folio);
+    }
+
     public void agregarObserver(VentaObserver observer) {
         registrarVentaService.agregarObserver(observer);
     }

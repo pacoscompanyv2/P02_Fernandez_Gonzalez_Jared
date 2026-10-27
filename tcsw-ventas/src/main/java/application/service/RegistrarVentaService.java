@@ -46,6 +46,8 @@ public class RegistrarVentaService implements RegistrarVentaUseCase {
         for (ItemVenta item : items) {
             venta.agregarPartida(encontrados.get(item.getCodigoProducto()), item.getCantidad());
         }
+        // una venta registrada queda CERRADA (antes quedaba cerrada=false en la base: deuda de P08)
+        venta.cerrar();
         ventas.guardar(venta);
         for (VentaObserver observer : observers) {
             observer.onVentaRegistrada(venta);
