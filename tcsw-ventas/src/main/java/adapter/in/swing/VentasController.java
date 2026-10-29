@@ -69,6 +69,16 @@ public class VentasController {
         return venta;
     }
 
+    // C02: consulta una venta por folio. El controlador valida la entrada y traduce "no existe" a un mensaje para la vista
+    public Venta consultarVenta(String folio) {
+        if (folio == null || folio.trim().isEmpty()) {
+            throw new IllegalArgumentException("El folio de la venta es requerido");
+        }
+        String limpio = folio.trim();
+        return facade.buscarVenta(limpio)
+            .orElseThrow(() -> new IllegalArgumentException("No existe una venta con el folio " + limpio));
+    }
+
     private int cantidadEnCarrito(String codigo) {
         int total = 0;
         for (ItemVenta item : carrito) {
