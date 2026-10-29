@@ -1,0 +1,22 @@
+== Demo antes/despues - adaptador: hibernate - 2026-10-29 17:30 ==
+-- JVM 1: registrar la venta
+Adaptador: Hibernate   Modo: sembrar
+ANTES   : P1 existencia=18
+DESPUES : P1 existencia=16  (venta DEMO-C02-1 registrada)
+-- PostgreSQL directo (tras la JVM 1):
+   folio    | total  | cerrada 
+------------+--------+---------
+ DEMO-C02-1 | 300.00 | t
+(1 row)
+
+ codigo | existencia 
+--------+------------
+ P1     |         16
+(1 row)
+
+-- Reiniciando el contenedor de PostgreSQL...
+-- JVM 2 (proceso nuevo): consultar
+Adaptador: Hibernate   Modo: consultar
+TRAS REINICIAR: P1 existencia=16
+Venta DEMO-C02-1 encontrada: cerrada=true total=300.0 partidas=1
+  - P1 x2

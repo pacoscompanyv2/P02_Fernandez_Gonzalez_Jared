@@ -1,5 +1,6 @@
 package adapter.in.swing;
 
+import adapter.out.hibernate.RepositoriosHibernateFactory;
 import adapter.out.jdbc.RepositoriosFactory;
 import application.facade.VentasFacade;
 import application.port.out.ProductoRepository;
@@ -10,10 +11,20 @@ import javax.swing.SwingUtilities;
 
 public class Main {
     public static void main(String[] args) {
-        // raiz de composicion: con variables TCSW_DB_* usa PostgreSQL; sin ellas, memoria (como en P07)
-        ProductoRepository productos = RepositoriosFactory.productos();
-        VentaRepository ventas = RepositoriosFactory.ventas();
-        System.out.println("Almacenamiento: " + (RepositoriosFactory.usaPostgres() ? "PostgreSQL" : "memoria"));
+        // raiz de composicion: TCSW_PERSISTENCIA=hibernate -> Hibernate; si no, con TCSW_DB_* -> JDBC; si no, memoria (como en P07)
+        ProductoRepository productos;
+        VentaRepository ventas;
+        String almacenamiento;
+        if (RepositoriosHibernateFactory.seleccionado()) {
+            productos = RepositoriosHibernateFactory.productos();
+            ventas = RepositoriosHibernateFactory.ventas();
+            almacenamiento = "PostgreSQL (Hibernate)";
+        } else {
+            productos = RepositoriosFactory.productos();
+            ventas = RepositoriosFactory.ventas();
+            almacenamiento = RepositoriosFactory.usaPostgres() ? "PostgreSQL (JDBC)" : "memoria";
+        }
+        System.out.println("Almacenamiento: " + almacenamiento);
 
         VentasFacade facade = new VentasFacade(productos, ventas);
 
