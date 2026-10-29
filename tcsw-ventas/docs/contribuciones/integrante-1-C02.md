@@ -28,7 +28,7 @@
 ## Pull Request y revision
 - PR #35 - "feat: Hibernate como segundo adaptador y ProductoRepositoryHibernate (#33)" - Closes #33
 - Revisor asignado: Suriel Francisco Tecpile
-- Comentario de revision explicito en GitHub antes del merge: VERIFICADO
+- Comentario de revision explicito en GitHub antes del merge: NO_VERIFICADO
 
 ## Pruebas
 - Unitarias (`mvn clean test`): 106 pruebas
@@ -44,7 +44,7 @@
 | Pull Request | #35 (Closes #33) | VERIFICADO |
 | Pruebas unitarias | 106 | VERIFICADO |
 | Pruebas de integracion en PostgreSQL 16 | 36 | VERIFICADO |
-| Comentario de revision antes del merge | revisor: Suriel | VERIFICADO |
+| Comentario de revision antes del merge | revisor asignado: Suriel (PR #35 sin comentario de revision) | NO_VERIFICADO |
 
 ## Limitaciones declaradas
 - Hibernate usa `PostgreSQLDialect` fijo y sin pool de conexiones (DriverManager): suficiente para el taller, no para produccion

@@ -14,7 +14,7 @@ Esta parte estaba asignada al integrante 3 (Jesus Armando Andres Tablilla). Como
 ## Rama y commits
 - Rama: `hibernate-ventas-transaccion`
 - Commit de codigo: `12b39d8` - feat: VentaRepositoryHibernate transaccional, concurrencia y demo (#38)
-- Commit de documentacion: en el historial del PR #XX
+- Commit de documentacion: en el historial del PR #39
 
 ## Decision tecnica
 - Bloqueo pesimista + descuento relativo en una sola transaccion (ADR-008); orden fijo de bloqueo contra interbloqueos
@@ -27,9 +27,9 @@ Esta parte estaba asignada al integrante 3 (Jesus Armando Andres Tablilla). Como
 - `scripts/demo-antes-despues.sh`, `scripts/verificar-c02.sh`, `docs/adr/ADR-008-transaccion-venta-bloqueo-pesimista.md`, `docs/evidencia/demo-antes-despues-*.txt`
 
 ## Pull Request y revision
-- PR #XX - "feat: VentaRepositoryHibernate transaccional, concurrencia y demo (#38)" - Closes #38
-- Revisor asignado: Suriel Francisco Tecpile
-- Comentario de revision explicito en GitHub antes del merge: VERIFICADO
+- PR #39 - "feat: VentaRepositoryHibernate transaccional, concurrencia y demo (#38)" - Closes #38
+- Revisor asignado: ninguno (el PR no tuvo revisor; lo integro su propio autor)
+- Comentario de revision explicito en GitHub antes del merge: NO_VERIFICADO
 
 ## Pruebas
 - Unitarias (`mvn clean test`): 117 pruebas
@@ -42,13 +42,14 @@ Esta parte estaba asignada al integrante 3 (Jesus Armando Andres Tablilla). Como
 | Issue | #38 | VERIFICADO |
 | Rama | `hibernate-ventas-transaccion` | VERIFICADO |
 | Commit de codigo | `12b39d8` | VERIFICADO |
-| Pull Request | #XX (Closes #38) | VERIFICADO |
+| Pull Request | #39 (Closes #38) | VERIFICADO |
 | Pruebas unitarias | 117 | VERIFICADO |
 | Pruebas de integracion en PostgreSQL 16 | 50 | VERIFICADO |
 | Demostracion antes/despues (2 JVM + reinicio de PostgreSQL) | `docs/evidencia/demo-antes-despues-hibernate.txt` | VERIFICADO |
-| Comentario de revision antes del merge | revisor: Suriel | VERIFICADO |
+| Comentario de revision antes del merge | sin revisor; PR integrado por su autor | NO_VERIFICADO |
 
 ## Limitaciones declaradas
 - La prueba de dos hilos depende del planificador del sistema; el resultado esperado (una venta pasa) es determinista por el bloqueo, pero el orden de cual gana no
 - `verificar-c02.sh` hace `down -v`: borra los datos locales de PostgreSQL
 - La demo usa la misma base para JDBC y Hibernate, por eso las existencias se descuentan de forma acumulada entre las dos corridas
+- Revision: en el PR #39 no hubo revisor ni comentario; el merge lo hizo el autor. En el PR #35 el revisor asignado integro sin dejar comentario de revision
