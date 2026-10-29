@@ -1,6 +1,7 @@
 package adapter.out.hibernate;
 
 import application.port.out.ProductoRepository;
+import application.port.out.VentaRepository;
 import org.hibernate.SessionFactory;
 
 import java.util.Map;
@@ -27,6 +28,10 @@ public final class RepositoriosHibernateFactory {
 
     public static ProductoRepository productos() {
         return new ProductoRepositoryHibernate(sessionFactory());
+    }
+
+    public static VentaRepository ventas() {
+        return new VentaRepositoryHibernate(sessionFactory());
     }
 
     // package-private: ni Main ni nada fuera del adaptador debe ver tipos de Hibernate
