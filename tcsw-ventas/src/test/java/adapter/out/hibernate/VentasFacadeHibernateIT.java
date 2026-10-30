@@ -43,7 +43,8 @@ class VentasFacadeHibernateIT extends HibernateTestBase {
         VentasFacade facade = nuevoFacade();
         facade.registrarProducto(new Producto("P1", "Playera", 100.0, 2));
 
-        assertThrows(IllegalStateException.class, () -> facade.registrarVenta("F-X", List.of(new ItemVenta("P1", 5))));
+        List<ItemVenta> pedido = List.of(new ItemVenta("P1", 5));
+        assertThrows(IllegalStateException.class, () -> facade.registrarVenta("F-X", pedido));
 
         assertEquals(0, consultarEntero("SELECT count(*) FROM venta"));
         assertEquals(2, existenciaEnBd("P1"));

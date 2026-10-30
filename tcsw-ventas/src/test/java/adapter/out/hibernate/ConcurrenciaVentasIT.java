@@ -2,7 +2,6 @@ package adapter.out.hibernate;
 
 import adapter.out.jdbc.ProductoRepositoryJdbc;
 import adapter.out.jdbc.VentaRepositoryJdbc;
-import domain.Producto;
 import domain.Venta;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

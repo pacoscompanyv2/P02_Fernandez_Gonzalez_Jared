@@ -7,7 +7,6 @@ import domain.Venta;
 import jakarta.persistence.LockModeType;
 import org.hibernate.SessionFactory;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
