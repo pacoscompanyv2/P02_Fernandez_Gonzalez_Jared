@@ -1,4 +1,4 @@
-== Demo antes/despues - adaptador: hibernate - 2026-10-29 17:30 ==
+== Demo antes/despues - adaptador: hibernate - 2026-10-29 17:53 ==
 -- JVM 1: registrar la venta
 Adaptador: Hibernate   Modo: sembrar
 ANTES   : P1 existencia=18

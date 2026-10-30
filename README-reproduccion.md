@@ -195,3 +195,31 @@ se conserva. Sin las variables `TCSW_DB_*` imprime `Almacenamiento: memoria` y t
 | `mvn clean verify -Pintegracion` (pruebas *IT en PostgreSQL 16) | VERIFICADO | 27 pruebas, 0 fallos, 0 errores (24-oct, main ac92607) |
 | Aplicacion Swing con PostgreSQL (venta que sobrevive al reinicio) | VERIFICADO (equipo de Jesus); reproduccion propia NO_VERIFICADO | capturas de Jesus y docs/protocolo-visual-P08.md |
 | Analisis Sonar | VERIFICADO | proyecto P08-VENTAS, Quality Gate Passed, captura Overall Code |
+
+## Reproduccion - C02 (Hibernate + Swing + transacciones)
+
+Requisitos: los de P08 (Docker, Java 11+, Maven 3.8+, `.env` creado con `cp .env.example .env`). Todo el corte se reproduce desde `tcsw-ventas/` con un comando:
+
+```bash
+./scripts/verificar-c02.sh      # down -v, esquema nuevo, mvn clean verify -Pintegracion, demos antes/despues, evidencia
+```
+
+Esperado: 117 pruebas unitarias y 50 de integracion, 0 fallos y 0 errores. `down -v` borra los datos locales de PostgreSQL (son sinteticos).
+
+Abrir la aplicacion (con PostgreSQL arriba):
+
+```bash
+./scripts/ejecutar-app.sh              # adaptador JDBC (P08)
+./scripts/ejecutar-app.sh hibernate    # adaptador Hibernate (C02)
+```
+
+| Elemento | Estado |
+|---|---|
+| Hibernate como segundo adaptador, JDBC conservado (ADR-007) | VERIFICADO |
+| Transaccion con bloqueo pesimista y concurrencia (ADR-008) | VERIFICADO |
+| Swing/MVC: pestana de consulta (ADR-009) | VERIFICADO (codigo y pruebas); captura de una consulta con resultado NO_VERIFICADO |
+| 117 unitarias y 50 de integracion | VERIFICADO |
+| Sonar (`cc2-ventas`): Quality Gate Passed, 15 issues, cobertura 71.6% | VERIFICADO |
+| Comentarios de revision en los PR #35, #37 y #39 | NO_VERIFICADO |
+
+Detalle: `docs/indice-evidencias-C02.md`, `docs/deuda-tecnica-C02.md`, `docs/bitacora-c02.md` y `docs/protocolo-visual-C02.md`.

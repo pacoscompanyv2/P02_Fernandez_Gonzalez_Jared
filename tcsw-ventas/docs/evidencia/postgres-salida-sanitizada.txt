@@ -1,10 +1,10 @@
 # Salida PostgreSQL sanitizada - P08 (datos sinteticos)
-# Generado (UTC): 2026-10-24T03:43:22Z
+# Generado (UTC): 2026-10-29T23:53:52Z
 
 ## 1. Version del servidor
-                                                          version                                                           
-----------------------------------------------------------------------------------------------------------------------------
- PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on aarch64-unknown-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+                                                       version                                                        
+----------------------------------------------------------------------------------------------------------------------
+ PostgreSQL 16.15 (Debian 16.15-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
 (1 row)
 
 ## 2. Tablas del esquema
@@ -69,17 +69,20 @@ Foreign-key constraints:
     "detalle_venta_folio_fkey" FOREIGN KEY (folio) REFERENCES venta(folio) ON DELETE CASCADE
 
 ## 4. Datos persistidos por la aplicacion
- codigo | nombre | precio | existencia 
---------+--------+--------+------------
-(0 rows)
+ codigo |      nombre       | precio | existencia 
+--------+-------------------+--------+------------
+ P1     | Playera Deportiva | 150.00 |         16
+(1 row)
 
- folio | total | cerrada 
--------+-------+---------
-(0 rows)
+   folio    | total  | cerrada 
+------------+--------+---------
+ DEMO-C02-1 | 300.00 | t
+(1 row)
 
- folio | linea | codigo | cantidad | precio_unitario 
--------+-------+--------+----------+-----------------
-(0 rows)
+   folio    | linea | codigo | cantidad | precio_unitario 
+------------+-------+--------+----------+-----------------
+ DEMO-C02-1 |     1 | P1     |        2 |          150.00
+(1 row)
 
 ## 5. Rechazo de estado invalido (cada intento va en una transaccion que se revierte; no cambia datos)
 -- 5.1 existencia negativa (CHECK)
