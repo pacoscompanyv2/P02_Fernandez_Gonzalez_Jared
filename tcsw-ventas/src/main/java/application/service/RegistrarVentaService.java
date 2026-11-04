@@ -1,6 +1,8 @@
 package application.service;
 
 import application.observer.VentaObserver;
+import application.exception.ExistenciaInsuficienteException;
+import application.exception.ProductoNoEncontradoException;
 import application.port.in.ItemVenta;
 import application.port.in.RegistrarVentaUseCase;
 import application.port.out.ProductoRepository;
@@ -72,7 +74,7 @@ public class RegistrarVentaService implements RegistrarVentaUseCase {
             }
             String codigo = item.getCodigoProducto();
             Producto producto = productos.buscarPorCodigo(codigo)
-                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado: " + codigo));
+                .orElseThrow(() -> new ProductoNoEncontradoException(codigo));
             encontrados.put(codigo, producto);
             // si el mismo producto aparece en varias lineas, se suman
             solicitado.merge(codigo, item.getCantidad(), Integer::sum);
@@ -81,8 +83,7 @@ public class RegistrarVentaService implements RegistrarVentaUseCase {
         for (Map.Entry<String, Integer> e : solicitado.entrySet()) {
             Producto producto = encontrados.get(e.getKey());
             if (e.getValue() > producto.getExistencia()) {
-                throw new IllegalStateException("Existencia insuficiente para " + e.getKey()
-                    + ": disponible " + producto.getExistencia() + ", solicitado " + e.getValue());
+                throw new ExistenciaInsuficienteException(e.getKey(), producto.getExistencia(), e.getValue());
             }
         }
         return encontrados;
