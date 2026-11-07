@@ -1,0 +1,51 @@
+== Verificacion P09 - API de ventas  (2026-11-06 22:14) ==
+commit: 430f12f
+java:   openjdk version "17.0.20.1" 2026-08-18
+
+== FASE A: almacenamiento en memoria ==
+OK    [200] GET  /api/v1/productos -> lista el catalogo
+        [{"codigo":"P1","nombre":"Playera Deportiva","precio":150.00,"existencia":20},{"codigo":"P2","nombre":"Pantalon Mezclilla","precio":350.00,"existencia":15},{"codigo":"P3"
+OK    [200] GET  /openapi.yaml -> sirve el contrato
+        openapi: 3.0.3 info:   title: API de ventas TCSW   version: 1.0.0   description: >     API REST basica de ventas (P09, equipo TCSW-E01). Productos de solo lectura y venta
+OK    [201] POST /api/v1/ventas -> 201 venta CERRADA
+        {"folio":"P09-A-1794024879","estado":"CERRADA","partidas":[{"codigoProducto":"P1","nombre":"Playera Deportiva","cantidad":2,"precioUnitario":150.00,"subtotal":300.00}],"t
+OK    [200] GET  /api/v1/ventas/{folio} -> 200
+        {"folio":"P09-A-1794024879","estado":"CERRADA","partidas":[{"codigoProducto":"P1","nombre":"Playera Deportiva","cantidad":2,"precioUnitario":150.00,"subtotal":300.00}],"t
+OK    [200] GET  /api/v1/productos/P1 -> existencia 20 menos 2
+        {"codigo":"P1","nombre":"Playera Deportiva","precio":150.00,"existencia":18}
+OK    [409] POST mismo folio -> 409 FOLIO_DUPLICADO
+        {"timestamp":"2026-11-07T04:14:39.655548823Z","status":409,"error":"Conflict","codigo":"FOLIO_DUPLICADO","mensaje":"Ya existe una venta con el folio P09-A-1794024879","ru
+OK    [400] POST datos invalidos -> 400 VALIDACION con detalles
+        {"timestamp":"2026-11-07T04:14:39.688061605Z","status":400,"error":"Bad Request","codigo":"VALIDACION","mensaje":"La solicitud no es valida","ruta":"/api/v1/ventas","deta
+OK    [400] POST JSON roto -> 400 JSON_INVALIDO
+        {"timestamp":"2026-11-07T04:14:39.710363884Z","status":400,"error":"Bad Request","codigo":"JSON_INVALIDO","mensaje":"El cuerpo de la solicitud no es un JSON valido o tien
+OK    [404] POST producto inexistente -> 404 PRODUCTO_NO_ENCONTRADO
+        {"timestamp":"2026-11-07T04:14:39.731802957Z","status":404,"error":"Not Found","codigo":"PRODUCTO_NO_ENCONTRADO","mensaje":"Producto no encontrado: NOPE","ruta":"/api/v1/
+OK    [409] POST sin existencia -> 409 EXISTENCIA_INSUFICIENTE
+        {"timestamp":"2026-11-07T04:14:39.754330401Z","status":409,"error":"Conflict","codigo":"EXISTENCIA_INSUFICIENTE","mensaje":"Existencia insuficiente para P1: disponible 18
+OK    [200] GET  producto tras el rechazo -> sigue en 18
+        {"codigo":"P1","nombre":"Playera Deportiva","precio":150.00,"existencia":18}
+OK    [404] GET  venta inexistente -> 404 VENTA_NO_ENCONTRADA
+        {"timestamp":"2026-11-07T04:14:39.794371270Z","status":404,"error":"Not Found","codigo":"VENTA_NO_ENCONTRADA","mensaje":"Venta no encontrada: NO-EXISTE","ruta":"/api/v1/v
+OK    [405] DELETE venta -> 405 METODO_NO_PERMITIDO
+        {"timestamp":"2026-11-07T04:14:39.814658673Z","status":405,"error":"Method Not Allowed","codigo":"METODO_NO_PERMITIDO","mensaje":"Metodo HTTP no permitido para esta ruta"
+OK    [404] GET  ruta inexistente -> 404 RECURSO_NO_ENCONTRADO
+        {"timestamp":"2026-11-07T04:14:39.835236162Z","status":404,"error":"Not Found","codigo":"RECURSO_NO_ENCONTRADO","mensaje":"No existe el recurso solicitado","ruta":"/api/v
+
+== FASE B: PostgreSQL con Hibernate (base de pruebas) y persistencia tras reiniciar la API ==
+OK    [201] POST /api/v1/ventas (Hibernate) -> 201 CERRADA
+        {"folio":"P09-B-1794024880","estado":"CERRADA","partidas":[{"codigoProducto":"P1","nombre":"Playera Deportiva","cantidad":2,"precioUnitario":150.00,"subtotal":300.00}],"t
+OK    [200] GET  producto -> existencia 18 en PostgreSQL
+        {"codigo":"P1","nombre":"Playera Deportiva","precio":150.00,"existencia":18}
+-- API detenida y vuelta a arrancar (reinicio) --
+OK    [200] GET  venta tras REINICIAR la API -> 200 CERRADA
+        {"folio":"P09-B-1794024880","estado":"CERRADA","partidas":[{"codigoProducto":"P1","nombre":"Playera Deportiva","cantidad":2,"precioUnitario":150.00,"subtotal":300.00}],"t
+OK    [200] GET  producto tras reiniciar -> sigue en 18
+        {"codigo":"P1","nombre":"Playera Deportiva","precio":150.00,"existencia":18}
+OK    [409] POST mismo folio -> 409 FOLIO_DUPLICADO
+        {"timestamp":"2026-11-07T04:14:47.138685753Z","status":409,"error":"Conflict","codigo":"FOLIO_DUPLICADO","mensaje":"Ya existe una venta con el folio P09-B-1794024880","ru
+OK    [409] POST sin existencia -> 409 y sin cambios
+        {"timestamp":"2026-11-07T04:14:47.176368901Z","status":409,"error":"Conflict","codigo":"EXISTENCIA_INSUFICIENTE","mensaje":"Existencia insuficiente para P1: disponible 18
+OK    [SQL] la venta P09-B-1794024880 quedo con cerrada = t en PostgreSQL
+
+== RESULTADO: 21 comprobaciones, 0 fallas ==

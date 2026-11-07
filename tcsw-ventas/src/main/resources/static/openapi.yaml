@@ -1,0 +1,255 @@
+openapi: 3.0.3
+info:
+  title: API de ventas TCSW
+  version: 1.0.0
+  description: >
+    API REST basica de ventas (P09, equipo TCSW-E01). Productos de solo lectura y ventas: registrar y consultar.
+    Todos los errores usan el mismo formato (esquema Error). Datos sinteticos de la practica.
+servers:
+  - url: http://127.0.0.1:8080
+    description: ejecucion local (scripts/ejecutar-api.sh)
+tags:
+  - name: Productos
+  - name: Ventas
+paths:
+  /api/v1/productos:
+    get:
+      tags: [Productos]
+      summary: Lista el catalogo de productos
+      operationId: listarProductos
+      responses:
+        "200":
+          description: Lista de productos (puede venir vacia)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Producto"
+  /api/v1/productos/{codigo}:
+    get:
+      tags: [Productos]
+      summary: Consulta un producto por codigo
+      operationId: obtenerProducto
+      parameters:
+        - name: codigo
+          in: path
+          required: true
+          schema:
+            type: string
+            maxLength: 20
+          example: P1
+      responses:
+        "200":
+          description: El producto
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Producto"
+        "404":
+          $ref: "#/components/responses/Error404"
+  /api/v1/ventas:
+    post:
+      tags: [Ventas]
+      summary: Registra una venta
+      description: >
+        Valida la forma del JSON (400), que los productos existan (404), que alcance la existencia (409) y que el folio
+        no se repita (409). Una venta registrada queda CERRADA y descuenta existencias en una sola operacion.
+      operationId: registrarVenta
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VentaRequest"
+            example:
+              folio: P09-1
+              items:
+                - codigoProducto: P1
+                  cantidad: 2
+      responses:
+        "201":
+          description: Venta registrada. La cabecera Location apunta a GET /api/v1/ventas/{folio}
+          headers:
+            Location:
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Venta"
+        "400":
+          description: Solicitud invalida (codigo VALIDACION con detalles por campo, JSON_INVALIDO o SOLICITUD_INVALIDA)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Un producto del pedido no existe (codigo PRODUCTO_NO_ENCONTRADO)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Existencia insuficiente (EXISTENCIA_INSUFICIENTE) o folio repetido (FOLIO_DUPLICADO)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "415":
+          description: El cuerpo debe ser application/json (codigo MEDIA_TYPE_NO_SOPORTADO)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /api/v1/ventas/{folio}:
+    get:
+      tags: [Ventas]
+      summary: Consulta una venta por folio
+      operationId: obtenerVenta
+      parameters:
+        - name: folio
+          in: path
+          required: true
+          schema:
+            type: string
+            maxLength: 30
+          example: P09-1
+      responses:
+        "200":
+          description: La venta
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Venta"
+        "404":
+          $ref: "#/components/responses/Error404"
+components:
+  responses:
+    Error404:
+      description: No existe el recurso (PRODUCTO_NO_ENCONTRADO o VENTA_NO_ENCONTRADA)
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  schemas:
+    Producto:
+      type: object
+      required: [codigo, nombre, precio, existencia]
+      properties:
+        codigo:
+          type: string
+          example: P1
+        nombre:
+          type: string
+          example: Playera Deportiva
+        precio:
+          type: number
+          format: decimal
+          example: 150.00
+        existencia:
+          type: integer
+          example: 20
+    ItemVentaRequest:
+      type: object
+      required: [codigoProducto, cantidad]
+      properties:
+        codigoProducto:
+          type: string
+          maxLength: 20
+        cantidad:
+          type: integer
+          minimum: 1
+          maximum: 10000
+    VentaRequest:
+      type: object
+      required: [folio, items]
+      properties:
+        folio:
+          type: string
+          maxLength: 30
+        items:
+          type: array
+          minItems: 1
+          maxItems: 100
+          items:
+            $ref: "#/components/schemas/ItemVentaRequest"
+    Partida:
+      type: object
+      required: [codigoProducto, nombre, cantidad, precioUnitario, subtotal]
+      properties:
+        codigoProducto:
+          type: string
+        nombre:
+          type: string
+        cantidad:
+          type: integer
+        precioUnitario:
+          type: number
+          format: decimal
+        subtotal:
+          type: number
+          format: decimal
+    Venta:
+      type: object
+      required: [folio, estado, partidas, total]
+      properties:
+        folio:
+          type: string
+        estado:
+          type: string
+          enum: [ABIERTA, CERRADA]
+        partidas:
+          type: array
+          items:
+            $ref: "#/components/schemas/Partida"
+        total:
+          type: number
+          format: decimal
+          description: Total con el descuento del dominio ya aplicado
+    ErrorDetalle:
+      type: object
+      required: [campo, mensaje]
+      properties:
+        campo:
+          type: string
+          example: items[0].cantidad
+        mensaje:
+          type: string
+    Error:
+      type: object
+      description: Formato unico de todo error de la API
+      required: [timestamp, status, error, codigo, mensaje, ruta]
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+        error:
+          type: string
+          example: Not Found
+        codigo:
+          type: string
+          enum:
+            - VALIDACION
+            - JSON_INVALIDO
+            - SOLICITUD_INVALIDA
+            - PRODUCTO_NO_ENCONTRADO
+            - VENTA_NO_ENCONTRADA
+            - EXISTENCIA_INSUFICIENTE
+            - FOLIO_DUPLICADO
+            - CONFLICTO
+            - RECURSO_NO_ENCONTRADO
+            - METODO_NO_PERMITIDO
+            - MEDIA_TYPE_NO_SOPORTADO
+            - ERROR_INTERNO
+        mensaje:
+          type: string
+        ruta:
+          type: string
+        detalles:
+          type: array
+          description: Solo en errores de validacion (VALIDACION)
+          items:
+            $ref: "#/components/schemas/ErrorDetalle"
