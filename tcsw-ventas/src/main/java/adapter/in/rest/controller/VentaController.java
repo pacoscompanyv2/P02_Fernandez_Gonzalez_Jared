@@ -54,7 +54,7 @@ public class VentaController {
     }
 
     @GetMapping("/{folio}")
-    public VentaResponse obtener(@PathVariable String folio) {
+    public VentaResponse obtener(@PathVariable("folio") String folio) {
         return facade.buscarVenta(folio)
             .map(VentaResponse::from)
             .orElseThrow(() -> new VentaNoEncontradaException(folio));
