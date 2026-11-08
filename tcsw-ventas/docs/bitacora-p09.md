@@ -8,4 +8,4 @@
 | 2026-11-06 | Issue #42, endpoints de ventas con validacion; 161 pruebas en verde; PR #43 integrado por Jesus (sin comentario de revision humano) | `4edb9ef`, `61d9313`, merge `430f12f` |
 | 2026-11-06 | Issue #44; contrato OpenAPI, prueba de contrato y `verificar-p09.sh`: 21 comprobaciones, 0 fallas; 174 pruebas unitarias | `52da8a2` |
 | 2026-11-07 | PR #45 integrado por Jared | merge `40ecaa0` |
-| 2026-11-08 | Cierre: pruebas de integracion, Sonar, documentacion final y etiqueta `v0.4-api` | <HASH_FINAL> |
+| 2026-11-08 | Cierre: pruebas de integracion, Sonar, documentacion final y etiqueta `v0.4-api` | etiqueta v0.4-api (ver git tag) |
