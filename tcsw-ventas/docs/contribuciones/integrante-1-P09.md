@@ -27,7 +27,7 @@
 ## Pull Request y revision
 - PR #41 - "feat: API REST base con Spring Boot, productos y errores consistentes (#40)" - Closes #40
 - Revisor asignado: Suriel Francisco Tecpile
-- Comentario de revision explicito en GitHub antes del merge: NO_VERIFICADO
+- Comentario de revision explicito en GitHub antes del merge: VERIFICADO
 
 ## Pruebas
 - Unitarias (`mvn clean test`): 141 pruebas
@@ -42,7 +42,7 @@
 | Pull Request | #41 (Closes #40) | VERIFICADO |
 | Pruebas unitarias | 141 | VERIFICADO |
 | API probada con curl (GET productos, 404) | captura de la terminal | VERIFICADO |
-| Comentario de revision antes del merge | revisor: Suriel | NO_VERIFICADO |
+| Comentario de revision antes del merge | revisor: Suriel | VERIFICADO |
 
 ## Limitaciones declaradas
 - Sin autenticacion: la API escucha solo en 127.0.0.1 (fuera del alcance de P09)

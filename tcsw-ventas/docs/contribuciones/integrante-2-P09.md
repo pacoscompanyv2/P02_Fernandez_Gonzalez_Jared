@@ -25,7 +25,7 @@
 ## Pull Request y revision
 - PR #43 - "feat: endpoints de ventas con DTO y validacion (#42)" - Closes #42
 - Revisor asignado: Jesus Armando Andres Tablilla
-- Comentario de revision explicito en GitHub antes del merge: [E_REV]
+- Comentario de revision explicito en GitHub antes del merge: NO_VERIFICADO
 
 ## Pruebas
 - Unitarias (`mvn clean test`): 161 pruebas
@@ -39,8 +39,8 @@
 | Commit de codigo | `4edb9ef` | VERIFICADO |
 | Pull Request | #43 (Closes #42) | VERIFICADO |
 | Pruebas unitarias | 161 | VERIFICADO |
-| Recorrido con curl (201, 409, 400, 404) | captura de la terminal | [E_CURL] |
-| Comentario de revision antes del merge | revisor: Jesus | [E_REV] |
+| Recorrido con curl (201, 409, 400, 404) | captura de la terminal | VERIFICADO |
+| Comentario de revision antes del merge | revisor: Jesus | NO_VERIFICADO |
 
 ## Limitaciones declaradas
 - La comprobacion de folio repetido y el registro no son atomicos: dos peticiones simultaneas con el mismo folio podrian llegar a la base (la llave primaria lo detiene, pero la respuesta seria 500). Ver D-API-1 en `integrante-3-P09.md`

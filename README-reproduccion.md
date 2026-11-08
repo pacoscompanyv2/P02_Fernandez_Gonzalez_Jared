@@ -223,3 +223,40 @@ Abrir la aplicacion (con PostgreSQL arriba):
 | Comentarios de revision en los PR #35, #37 y #39 | NO_VERIFICADO |
 
 Detalle: `docs/indice-evidencias-C02.md`, `docs/deuda-tecnica-C02.md`, `docs/bitacora-c02.md` y `docs/protocolo-visual-C02.md`.
+
+## P09 - API de ventas (Spring Boot)
+
+La API REST es un segundo adaptador de entrada (`adapter.in.rest`) sobre el mismo `VentasFacade` que usa Swing. Funciona con memoria, JDBC o Hibernate (ADR-010). El contrato esta en `tcsw-ventas/src/main/resources/static/openapi.yaml` y se sirve en `/openapi.yaml`.
+
+Requisitos: JDK 17 o superior, Maven 3.9, Docker con Compose (solo para PostgreSQL) y `curl`.
+
+```bash
+cd tcsw-ventas
+cp .env.example .env                 # cambia la clave; nunca subas .env
+mvn -B clean test                    # unitarias, sin Docker
+./scripts/ejecutar-api.sh memoria    # API en http://127.0.0.1:8080
+```
+
+Con PostgreSQL:
+
+```bash
+docker compose up -d --wait
+set -a; . ./.env; set +a
+mvn -B clean verify -Pintegracion    # unitarias + integracion
+./scripts/verificar-p09.sh           # recorrido completo; termina con "0 fallas"
+./scripts/ejecutar-api.sh hibernate  # API con Hibernate
+```
+
+| Operacion | Respuestas |
+|---|---|
+| `GET /api/v1/productos` | 200 |
+| `GET /api/v1/productos/{codigo}` | 200, 404 |
+| `POST /api/v1/ventas` | 201 con `Location`, 400, 404, 409, 415 |
+| `GET /api/v1/ventas/{folio}` | 200, 404 |
+
+Todos los errores usan el mismo formato: `timestamp`, `status`, `error`, `codigo`, `mensaje`, `ruta` y, en validacion, `detalles`. Ejemplo:
+
+```bash
+curl -i -X POST http://127.0.0.1:8080/api/v1/ventas -H 'Content-Type: application/json' \
+  -d '{"folio":"P09-1","items":[{"codigoProducto":"P1","cantidad":2}]}'
+```
