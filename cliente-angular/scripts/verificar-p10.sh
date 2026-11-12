@@ -18,8 +18,10 @@ OK=0; FALLAS=0; PID_API=""; PID_WEB=""
 
 log() { echo "$*" | tee -a "$SALIDA"; }
 limpiar() {
-  [ -n "$PID_WEB" ] && kill -- -"$PID_WEB" 2>/dev/null
-  [ -n "$PID_API" ] && kill -- -"$PID_API" 2>/dev/null
+  # Mata por puerto: "kill -- -PID" falla en silencio porque $! no es lider de grupo con setsid en segundo plano.
+  for p in 4200 8080; do
+    for pid in $(ss -ltnp 2>/dev/null | grep -E ":$p\b" | grep -o "pid=[0-9]*" | cut -d= -f2 | sort -u); do kill "$pid" 2>/dev/null; done
+  done
 }
 trap limpiar EXIT
 

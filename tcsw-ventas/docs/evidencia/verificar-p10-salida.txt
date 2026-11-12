@@ -6,18 +6,18 @@ OK    [200] el cliente sirve su pagina (app-root)
 OK    [200] catalogo por el proxy: GET /api/v1/productos
         [{"codigo":"P1","nombre":"Playera Deportiva","precio":150.00,"existencia":20},{"codigo":"P2","nombre":"Pantalon Mezclilla","precio":350.00,"existencia":15},{"codigo":"P3"
 OK    [404] producto inexistente: 404 PRODUCTO_NO_ENCONTRADO
-        {"timestamp":"2026-11-11T06:57:18.536369201Z","status":404,"error":"Not Found","codigo":"PRODUCTO_NO_ENCONTRADO","mensaje":"Producto no encontrado: NOPE","ruta":"/api/v1/
+        {"timestamp":"2026-11-12T08:17:19.235272897Z","status":404,"error":"Not Found","codigo":"PRODUCTO_NO_ENCONTRADO","mensaje":"Producto no encontrado: NOPE","ruta":"/api/v1/
 OK    [201] registrar venta: 201 CERRADA
-        {"folio":"P10-1794380238","estado":"CERRADA","partidas":[{"codigoProducto":"P1","nombre":"Playera Deportiva","cantidad":2,"precioUnitario":150.00,"subtotal":300.00}],"tot
+        {"folio":"P10-1794471439","estado":"CERRADA","partidas":[{"codigoProducto":"P1","nombre":"Playera Deportiva","cantidad":2,"precioUnitario":150.00,"subtotal":300.00}],"tot
 OK    [200] consultar la venta registrada: 200
-        {"folio":"P10-1794380238","estado":"CERRADA","partidas":[{"codigoProducto":"P1","nombre":"Playera Deportiva","cantidad":2,"precioUnitario":150.00,"subtotal":300.00}],"tot
+        {"folio":"P10-1794471439","estado":"CERRADA","partidas":[{"codigoProducto":"P1","nombre":"Playera Deportiva","cantidad":2,"precioUnitario":150.00,"subtotal":300.00}],"tot
 OK    [409] mismo folio otra vez: 409 FOLIO_DUPLICADO
-        {"timestamp":"2026-11-11T06:57:18.761256702Z","status":409,"error":"Conflict","codigo":"FOLIO_DUPLICADO","mensaje":"Ya existe una venta con el folio P10-1794380238","ruta
+        {"timestamp":"2026-11-12T08:17:19.357596242Z","status":409,"error":"Conflict","codigo":"FOLIO_DUPLICADO","mensaje":"Ya existe una venta con el folio P10-1794471439","ruta
 OK    [409] mas de la existencia: 409 EXISTENCIA_INSUFICIENTE
-        {"timestamp":"2026-11-11T06:57:18.787965142Z","status":409,"error":"Conflict","codigo":"EXISTENCIA_INSUFICIENTE","mensaje":"Existencia insuficiente para P1: disponible 18
+        {"timestamp":"2026-11-12T08:17:19.377880066Z","status":409,"error":"Conflict","codigo":"EXISTENCIA_INSUFICIENTE","mensaje":"Existencia insuficiente para P1: disponible 18
 OK    [400] venta sin partidas: 400 VALIDACION
-        {"timestamp":"2026-11-11T06:57:18.815485046Z","status":400,"error":"Bad Request","codigo":"VALIDACION","mensaje":"La solicitud no es valida","ruta":"/api/v1/ventas","deta
+        {"timestamp":"2026-11-12T08:17:19.399832045Z","status":400,"error":"Bad Request","codigo":"VALIDACION","mensaje":"La solicitud no es valida","ruta":"/api/v1/ventas","deta
 OK    [404] folio inexistente: 404 VENTA_NO_ENCONTRADA
-        {"timestamp":"2026-11-11T06:57:18.840276993Z","status":404,"error":"Not Found","codigo":"VENTA_NO_ENCONTRADA","mensaje":"Venta no encontrada: NO-EXISTE","ruta":"/api/v1/v
+        {"timestamp":"2026-11-12T08:17:19.421011963Z","status":404,"error":"Not Found","codigo":"VENTA_NO_ENCONTRADA","mensaje":"Venta no encontrada: NO-EXISTE","ruta":"/api/v1/v
 
 == RESULTADO: 9 comprobaciones, 0 fallas ==
