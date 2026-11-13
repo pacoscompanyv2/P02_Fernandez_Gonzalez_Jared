@@ -260,3 +260,33 @@ Todos los errores usan el mismo formato: `timestamp`, `status`, `error`, `codigo
 curl -i -X POST http://127.0.0.1:8080/api/v1/ventas -H 'Content-Type: application/json' \
   -d '{"folio":"P09-1","items":[{"codigoProducto":"P1","cantidad":2}]}'
 ```
+
+## P10 - Cliente Angular
+
+El cliente (`cliente-angular/`) consume la API de P09 por un proxy de desarrollo: Angular sirve la pagina en el puerto 4200 y reenvia `/api` a `http://127.0.0.1:8080`, asi que la API no cambia (ADR-011). Pantallas: Catalogo, Carrito, Venta (folio y confirmacion) y Consulta por folio.
+
+Requisitos: Node 22 con npm 10.9, JDK 17 y Maven para la API, y `curl`. Los puertos 8080 y 4200 deben estar libres.
+
+```bash
+cd cliente-angular
+npm install                     # .npmrc usa legacy-peer-deps por un error de npm 10.9
+npx ng build
+npx ng test --watch=false       # 9 archivos, 49 pruebas
+```
+
+Para verla funcionando, en dos terminales:
+
+```bash
+cd tcsw-ventas && ./scripts/ejecutar-api.sh memoria      # API en 127.0.0.1:8080
+cd cliente-angular && npx ng serve                       # abrir http://127.0.0.1:4200
+```
+
+Recorrido automatico completo (levanta la API y `ng serve`, prueba con curl a traves del proxy y los apaga al terminar; desde la raiz del repo):
+
+```bash
+./cliente-angular/scripts/verificar-p10.sh               # termina con "9 comprobaciones, 0 fallas"
+```
+
+La salida queda en `tcsw-ventas/docs/evidencia/verificar-p10-salida.txt`; los logs, en `/tmp/p10-api.log` y `/tmp/p10-web.log`.
+
+Limites: el proxy solo existe con `ng serve` (no hay despliegue de produccion); "sin conexion" esta probado con pruebas unitarias, no en el navegador; no se midio cobertura. Detalle en `tcsw-ventas/docs/indice-evidencias-P10.md`.

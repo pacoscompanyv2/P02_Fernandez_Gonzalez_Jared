@@ -10,7 +10,7 @@
 
 ## Rama y commits
 - Rama: `cliente-venta-consulta`
-- Commit de codigo: `ac33f16` - feat: formulario de venta, consulta y recorrido del cliente Angular (#50)
+- Commit de codigo: `ac33f16` - feat: formulario de venta, consulta y recorrido del cliente Angular (#) (el mensaje quedo sin el numero de issue; el issue es el #50)
 
 ## Decision tecnica
 - Formulario reactivo con un solo campo (folio): obligatorio, maximo 30 y no solo espacios; el boton se deshabilita si el formulario es invalido, el carrito esta vacio o hay un envio en curso
@@ -25,8 +25,8 @@
 - `cliente-angular/scripts/verificar-p10.sh`, `docs/evidencia/verificar-p10-salida.txt`
 
 ## Pull Request y revision
-- PR #51 - "feat: formulario de venta, consulta y recorrido del cliente Angular (#50)" - Closes #50
-- Revisor asignado: Jared Fernandez Gonzalez
+- PR #51 - "feat: formulario de venta, consulta y recorrido del cliente Angular" (el titulo quedo sin el numero de issue) - Closes #50
+- Revisor: Jared Fernandez Gonzalez aparecio solo como revisor sugerido por GitHub; no se solicito revision formal
 - Comentario de revision explicito en GitHub antes del merge: NO_VERIFICADO
 
 ## Pruebas
@@ -39,7 +39,7 @@
 |---|---|---|
 | Issue | #50 | VERIFICADO |
 | Rama | `cliente-venta-consulta` | VERIFICADO |
-| Commit de codigo | `ac33f16` | VERIFICADO |
+| Commit de codigo | `ac33f16` (mensaje sin numero de issue) | VERIFICADO |
 | Pull Request | #51 (Closes #50) | VERIFICADO |
 | `ng test`: 49 pruebas, 0 fallos | salida de la terminal | VERIFICADO |
 | `verificar-p10.sh`: 9 comprobaciones, 0 fallas | captura y `docs/evidencia/verificar-p10-salida.txt` | VERIFICADO |
