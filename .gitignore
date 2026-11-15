@@ -2,3 +2,4 @@
 # P08: nunca subir credenciales ni archivos locales
 .env
 .vscode/
+cliente-angular/.scannerwork/
