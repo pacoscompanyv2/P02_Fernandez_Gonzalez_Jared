@@ -59,9 +59,14 @@ else
 fi
 ./scripts/resumen-pruebas.sh | tee -a "$SALIDA"
 
-# 3. API: recorrido por HTTP (solo memoria, no necesita Docker)
-paso "3/5 API: recorrido por HTTP (verificar-p09.sh --solo-memoria)" target/c03-3-p09.log ./scripts/verificar-p09.sh --solo-memoria
+# 3. API: recorrido por HTTP; con Docker incluye la fase B (PostgreSQL con Hibernate y persistencia tras reiniciar la API)
+if [ "$CON_DOCKER" -eq 1 ]; then
+  paso "3/5 API: recorrido por HTTP, memoria y PostgreSQL con reinicio (verificar-p09.sh)" target/c03-3-p09.log ./scripts/verificar-p09.sh
+else
+  paso "3/5 API: recorrido por HTTP (verificar-p09.sh --solo-memoria; persistencia NO_VERIFICADO)" target/c03-3-p09.log ./scripts/verificar-p09.sh --solo-memoria
+fi
 grep -iE "RESULTADO|fallas" target/c03-3-p09.log | sin_color | tail -2 | tee -a "$SALIDA"
+cp docs/evidencia/verificar-p09-salida.txt docs/evidencia/verificar-c03-p09-salida.txt 2>/dev/null || true
 
 # 4. Cliente: instalar, compilar y probar
 paso "4/5 Cliente: npm install, ng build y ng test" target/c03-4-cliente.log \
@@ -71,6 +76,7 @@ sin_color <target/c03-4-cliente.log | grep -E "Test Files|Tests " | tee -a "$SAL
 # 5. Cliente + API por el proxy de Angular
 paso "5/5 Cliente + API por el proxy (verificar-p10.sh)" target/c03-5-p10.log "$RAIZ/cliente-angular/scripts/verificar-p10.sh"
 grep -E "RESULTADO" target/c03-5-p10.log | tail -1 | tee -a "$SALIDA"
+cp docs/evidencia/verificar-p10-salida.txt docs/evidencia/verificar-c03-p10-salida.txt 2>/dev/null || true
 
 log ""
 if [ "$FALLAS" -eq 0 ]; then

@@ -1,5 +1,5 @@
 == C03: integracion web (API + cliente Angular + nucleo) ==
-fecha: 2026-11-14 00:12  commit: 08497b8
+fecha: 2026-11-18 07:31  commit: 9170d28
 
 == 1/5 PostgreSQL (docker compose up --wait) ==
 OK
@@ -9,14 +9,14 @@ OK
 unitarias   (surefire):  total=174  fallos=0  errores=0
 integracion (failsafe):  total=56  fallos=0  errores=0
 
-== 3/5 API: recorrido por HTTP (verificar-p09.sh --solo-memoria) ==
+== 3/5 API: recorrido por HTTP, memoria y PostgreSQL con reinicio (verificar-p09.sh) ==
 OK
-== RESULTADO: 14 comprobaciones, 0 fallas ==
+== RESULTADO: 21 comprobaciones, 0 fallas ==
 
 == 4/5 Cliente: npm install, ng build y ng test ==
 OK
  Test Files  9 passed (9)
-      Tests  49 passed (49)
+      Tests  51 passed (51)
 
 == 5/5 Cliente + API por el proxy (verificar-p10.sh) ==
 OK
