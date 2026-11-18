@@ -300,10 +300,10 @@ Requisitos: JDK 17, Maven, Docker con Compose, Node 22 con npm 10.9 y `curl`; ar
 ```bash
 cd tcsw-ventas
 ./scripts/verificar-c03.sh              # 5 pasos; termina con "5 pasos, 0 fallas"
-./scripts/verificar-c03.sh --sin-docker # omite PostgreSQL y las pruebas de integracion (solo memoria)
+./scripts/verificar-c03.sh --sin-docker # omite PostgreSQL, integracion y persistencia (quedan NO_VERIFICADO)
 ```
 
-Que hace, en orden: (1) PostgreSQL con `docker compose up --wait`; (2) `mvn clean verify -Pintegracion` (174 unitarias y 56 de integracion en la ultima corrida); (3) recorrido HTTP de la API en memoria (14 comprobaciones); (4) `npm install`, `ng build` y `ng test` del cliente (49 pruebas); (5) cliente y API por el proxy de Angular (9 comprobaciones). El resumen queda en `tcsw-ventas/docs/evidencia/verificar-c03-salida.txt` y los logs en `tcsw-ventas/target/c03-*.log`. Al terminar, PostgreSQL sigue arriba; para apagarlo: `docker compose down`.
+Que hace, en orden: (1) PostgreSQL con `docker compose up --wait`; (2) `mvn clean verify -Pintegracion` (174 unitarias y 56 de integracion en la ultima corrida); (3) recorrido HTTP de la API en memoria y en PostgreSQL con reinicio de la API, o sea la persistencia (21 comprobaciones); (4) `npm install`, `ng build` y `ng test` del cliente (51 pruebas); (5) cliente y API por el proxy de Angular (9 comprobaciones). El resumen queda en `tcsw-ventas/docs/evidencia/verificar-c03-salida.txt`, las salidas de los pasos 3 y 5 en `verificar-c03-p09-salida.txt` y `verificar-c03-p10-salida.txt`, y los logs en `tcsw-ventas/target/c03-*.log`. Al terminar, PostgreSQL sigue arriba; para apagarlo: `docker compose down`. Nota: el script reescribe tambien `verificar-p09-salida.txt` y `verificar-p10-salida.txt` (evidencia de P09 y P10); si no quieres cambiarlas, restauralas con `git checkout --`.
 
 Para verlo en el navegador, en dos terminales:
 
@@ -312,4 +312,4 @@ cd tcsw-ventas && ./scripts/ejecutar-api.sh memoria      # API en 127.0.0.1:8080
 cd cliente-angular && npx ng serve                       # abrir http://localhost:4200
 ```
 
-Limites: "sin conexion" en el navegador depende de la correccion del integrante 2 (ver el indice); sin pruebas de extremo a extremo con navegador real; el proxy solo existe con `ng serve`. Detalle y estados en `tcsw-ventas/docs/indice-evidencias-C03.md`.
+Con la API apagada, el catalogo debe mostrar `SIN_CONEXION`. Limites: no hay pruebas de extremo a extremo con navegador real; el proxy solo existe con `ng serve`; no se ejecuto Sonar en C03. Detalle y estados en `tcsw-ventas/docs/indice-evidencias-C03.md`.

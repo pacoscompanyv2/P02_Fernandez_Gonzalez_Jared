@@ -6,41 +6,51 @@ Estados: VERIFICADO = hay evidencia; NO_VERIFICADO = no hay evidencia; PENDIENTE
 
 | Criterio (pts) | Evidencia | Estado |
 |---|---|---|
-| API (1.5) | Contrato y endpoints de P09 (`GET /api/v1/productos`, `GET /api/v1/productos/{codigo}`, `POST /api/v1/ventas`, `GET /api/v1/ventas/{folio}`); `verificar-p09.sh --solo-memoria`: 14 comprobaciones, 0 fallas; `mvn clean verify -Pintegracion`: 56 pruebas de integracion, 0 fallos | VERIFICADO |
-| Angular (1.5) | Cliente con Catalogo, Carrito, Venta y Consulta (navegacion por menu y rutas); `ng build` sin errores; `ng test`: 9 archivos, 49 pruebas, 0 fallos; `verificar-p10.sh`: 9 comprobaciones, 0 fallas a traves del proxy; recorrido en el navegador del integrante 1 (capturas en el Word) | VERIFICADO. Recorrido en navegador de los integrantes 2 y 3: PENDIENTE |
-| Reuso del nucleo (1) | `docs/reuso-nucleo-C03.md`: API y Swing entran por `VentasFacade`; el descuento por mayoreo y el redondeo viven solo en el dominio; el cliente solo estima el total; 4 reglas de `ArquitecturaRestTest` | VERIFICADO (codigo leido y comportamiento visto en el navegador). Desglose por clase de las reglas ArchUnit: NO_VERIFICADO (no se guardo; corren dentro de `mvn verify`, que termino sin fallos) |
-| Errores y validacion (0.5) | Exito, vacio y error vistos en el navegador: venta registrada, carrito vacio, busqueda sin resultados, `FOLIO_VACIO` en consulta, `VENTA_NO_ENCONTRADA` (folio 67), boton "Agregar" deshabilitado sin existencia; 409 `EXISTENCIA_INSUFICIENTE` y `FOLIO_DUPLICADO` en `verificar-p09.sh` | VERIFICADO. "Sin conexion" en navegador: PENDIENTE (hallazgo abajo). Validacion del folio de solo espacios en el formulario de venta: PENDIENTE |
-| Calidad (0.5) | 174 pruebas unitarias y 56 de integracion sin fallos; trazabilidad en la seccion siguiente; README con la reproduccion | VERIFICADO en lo propio; trazabilidad de los integrantes 2 y 3: PENDIENTE |
+| API (1.5) | Contrato y endpoints de P09 (`GET /api/v1/productos`, `GET /api/v1/productos/{codigo}`, `POST /api/v1/ventas`, `GET /api/v1/ventas/{folio}`); `verificar-p09.sh` completo: 21 comprobaciones, 0 fallas; `mvn clean verify -Pintegracion`: 174 pruebas unitarias y 56 de integracion, 0 fallos | VERIFICADO |
+| Angular (1.5) | Cliente con Catalogo, Carrito, Venta y Consulta (menu y rutas); `ng build` sin errores; `ng test`: 9 archivos, 51 pruebas, 0 fallos; `verificar-p10.sh`: 9 comprobaciones, 0 fallas por el proxy; recorrido en el navegador (capturas en el Word) | VERIFICADO |
+| Reuso del nucleo (1) | `docs/reuso-nucleo-C03.md`: API y Swing entran por `VentasFacade`; el descuento por mayoreo y el redondeo viven solo en el dominio; el cliente solo estima el total (599.00 estimado contra 569.00 final de la API); 4 reglas de `ArquitecturaRestTest` | VERIFICADO (codigo leido y comportamiento visto en el navegador). Resultado individual de cada regla ArchUnit: NO_VERIFICADO (corren dentro de `mvn verify`, que termino sin fallos) |
+| Errores y validacion (0.5) | Exito, vacio y error en el navegador: venta registrada, carrito vacio, busqueda sin resultados, `FOLIO_VACIO`, `VENTA_NO_ENCONTRADA` (folio 67), "Agregar" deshabilitado sin existencia, `SIN_CONEXION` con la API apagada; 409 `EXISTENCIA_INSUFICIENTE` y `FOLIO_DUPLICADO` en `verificar-p09.sh` | VERIFICADO. Folio de solo espacios en el formulario de venta: NO_VERIFICADO (no se probo) |
+| Calidad (0.5) | 174 + 56 + 51 pruebas sin fallos; bitacora, indice y reproduccion en README; trazabilidad en la seccion siguiente | VERIFICADO en lo propio; ver limitaciones de trazabilidad |
+
+## Evidencia de persistencia
+
+`verificar-p09.sh` (fase B) usa PostgreSQL con Hibernate sobre la base de pruebas: registra una venta, reinicia la API y vuelve a consultarla. Resultado de la corrida del 18-nov-2026 (`docs/evidencia/verificar-c03-p09-salida.txt`): `POST /api/v1/ventas` 201 CERRADA; existencia de P1 en 18; tras reiniciar la API, `GET` de la venta 200 CERRADA y existencia aun en 18; 409 por folio repetido; 409 por existencia insuficiente sin cambios; consulta SQL con `cerrada = t`. Total: 21 comprobaciones, 0 fallas. Estado: VERIFICADO.
 
 ## Verificacion integral
 
-Script: `tcsw-ventas/scripts/verificar-c03.sh` (5 pasos). Salida guardada en `docs/evidencia/verificar-c03-salida.txt`. Corrida del 14-nov-2026 sobre el commit `08497b8` con el script aun sin versionar (el script se agrego despues, en `0a7390c`):
+Script: `tcsw-ventas/scripts/verificar-c03.sh` (5 pasos). Corrida final del 18-nov-2026 a las 07:31 sobre el commit `9170d28` (el script modificado se versiono despues, en `bea54f4`):
 
 | Paso | Resultado |
 |---|---|
 | 1 PostgreSQL (`docker compose up --wait`) | OK |
 | 2 `mvn clean verify -Pintegracion` | unitarias 174 (0 fallos, 0 errores); integracion 56 (0 fallos, 0 errores) |
-| 3 `verificar-p09.sh --solo-memoria` | 14 comprobaciones, 0 fallas |
-| 4 `npm install`, `ng build`, `ng test` | 9 archivos, 49 pruebas, 0 fallos |
+| 3 `verificar-p09.sh` (memoria y PostgreSQL con reinicio) | 21 comprobaciones, 0 fallas |
+| 4 `npm install`, `ng build`, `ng test` | 9 archivos, 51 pruebas, 0 fallos |
 | 5 `verificar-p10.sh` | 9 comprobaciones, 0 fallas |
 | Resultado | 5 pasos, 0 fallas |
 
-## Trazabilidad por integrante
+Salidas guardadas: `docs/evidencia/verificar-c03-salida.txt`, `verificar-c03-p09-salida.txt` y `verificar-c03-p10-salida.txt`. Una corrida anterior (14-nov, sobre `08497b8`) uso `--solo-memoria` y no ejecuto la fase de persistencia; la del 18-nov la reemplaza.
 
-| Integrante | Aporte en C03 | Issue / PR | Estado |
-|---|---|---|---|
-| 1 Jared | script `verificar-c03.sh` (commit `0a7390c`, directo a `main`), documentacion de cierre, capturas, base del cliente y API (P09 y P10, ver sus archivos de contribucion) | issue #52; el PR que lo cierra enlaza `Closes #52` | script: VERIFICADO; documentacion: en revision |
-| 2 Suriel | correccion "API apagada = sin conexion" en `api-error.ts` y su prueba; corrida propia del script | por abrir | PENDIENTE |
-| 3 Jesus | revision del PR de Suriel; prueba propia de validacion del folio con espacios; corrida propia del script | por abrir | PENDIENTE |
+## Trazabilidad (declaracion de autoria)
 
-## Hallazgo abierto: "API apagada" se ve como `ERROR_HTTP`
+| Elemento | Referencia | Estado |
+|---|---|---|
+| Script `verificar-c03.sh` y su salida | `0a7390c` (14-nov) y `bea54f4` (18-nov), directo a `main`, sin issue ni PR | VERIFICADO, sin revision |
+| Correccion "API apagada = sin conexion" (`api-error.ts` y su prueba) | `9170d28`, directo a `main`, sin issue ni PR; 51 pruebas en verde; `SIN_CONEXION` visto en el navegador el 18-nov | VERIFICADO, sin revision |
+| Documentacion de cierre | issue #52, PR #53 | VERIFICADO; el PR #53 se fusiono el 18-nov sin comentario de revision de otro integrante |
 
-Con la API apagada, el proxy de `ng serve` responde 500 y el cliente muestra `ERROR_HTTP: La API respondio 500` en lugar del mensaje de "sin conexion" (visto en el navegador el 14-nov). Correccion propuesta: tratar como sin conexion un 500 que no trae el formato de error de la API (`codigo`). El parche existe y con el `ng test` dio 51 pruebas en verde en la maquina del integrante 1, pero **no esta integrado a `main`**: lo aplica el integrante 2 con su issue y PR. Hasta entonces: NO_VERIFICADO en `main`.
+Los integrantes 2 (Suriel) y 3 (Jesus) no registraron aportes en C03: el trabajo de este corte lo hizo el integrante 1. Su participacion previa esta en los archivos de contribucion de P09 y P10. No se generaron archivos `integrante-2-C03.md` ni `integrante-3-C03.md`.
+
+## Hallazgo cerrado: "API apagada" se veia como `ERROR_HTTP`
+
+El 14-nov, con la API apagada, el cliente mostraba `ERROR_HTTP: La API respondio 500` (el proxy de `ng serve` responde 500). Se corrigio en `9170d28`: un 500 sin el formato de error de la API (`codigo`) se trata como `SIN_CONEXION`; un 500 real de la API conserva su codigo. El 18-nov se vio en el navegador `SIN_CONEXION: No se pudo conectar con la API. Revisa que este en marcha en el puerto 8080.` Estado: VERIFICADO.
 
 ## Limitaciones
-- El script `verificar-c03.sh` y su salida se subieron directo a `main`, sin issue ni PR (`0a7390c`); lo dice su mensaje
-- La corrida guardada del script es del 14-nov sobre `08497b8`; no se repitio sobre el commit final
-- El total del carrito del cliente es una estimacion sin descuentos; el total final lo calcula la API (ver `reuso-nucleo-C03.md`)
-- No se volvio a ejecutar Sonar en C03: NO_VERIFICADO para este corte (el ultimo resultado del cliente, de P10, fue Quality Gate aprobado con 97.1 % de cobertura)
-- Sin pruebas de extremo a extremo con navegador real; el proxy solo existe con `ng serve`
-- Etiqueta `v0.3-web`: PENDIENTE
+- Script, correccion y parte de la evidencia se subieron directo a `main`, sin issue ni PR; los mensajes de commit lo dicen
+- El PR #53 se fusiono sin revision de otro integrante
+- La corrida final es sobre `9170d28` con el script modificado en el directorio de trabajo; el commit de cierre que lleva el tag solo agrega documentacion
+- `./scripts/verify-module.sh M13`, citado en la guia, no existe en este repositorio: NO_VERIFICADO (no disponible); `verificar-c03.sh` es el equivalente propio
+- No se ejecuto Sonar en C03: NO_VERIFICADO (el ultimo resultado del cliente, de P10, fue Quality Gate aprobado con 97.1 % de cobertura)
+- Sin pruebas de extremo a extremo con navegador real automatizadas; el proxy solo existe con `ng serve`
+- El total del carrito del cliente es una estimacion sin descuentos; el total final lo calcula la API
+- Etiqueta `v0.3-web` y entrega en Eminus: PENDIENTE hasta hacerlas
