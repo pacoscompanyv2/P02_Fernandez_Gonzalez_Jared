@@ -38,10 +38,21 @@ describe('describirError', () => {
     expect(describirError(http(504, 'Gateway Timeout')).codigo).toBe('SIN_CONEXION');
   });
 
-  it('una respuesta que no tiene el formato de la API no rompe', () => {
-    const e = describirError(http(500, '<html>boom</html>'));
+  it('un 500 sin el formato de la API (proxy con la API apagada) es sin conexion', () => {
+    expect(describirError(http(500, '<html>boom</html>')).codigo).toBe('SIN_CONEXION');
+    expect(describirError(http(500, null)).codigo).toBe('SIN_CONEXION');
+  });
+
+  it('un 500 real de la API conserva su codigo y mensaje', () => {
+    const e = describirError(http(500, { status: 500, codigo: 'ERROR_INTERNO', mensaje: 'Error interno' }));
+    expect(e.codigo).toBe('ERROR_INTERNO');
+    expect(e.mensaje).toBe('Error interno');
+  });
+
+  it('un error HTTP fuera de 5xx sin el formato de la API no rompe', () => {
+    const e = describirError(http(418, '<html>teapot</html>'));
     expect(e.codigo).toBe('ERROR_HTTP');
-    expect(e.mensaje).toContain('500');
+    expect(e.mensaje).toContain('418');
   });
 
   it('un error que no es HTTP se describe como desconocido', () => {

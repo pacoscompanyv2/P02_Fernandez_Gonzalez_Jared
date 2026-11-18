@@ -18,6 +18,10 @@ export function describirError(err: unknown): ErrorVisible {
       return { status: err.status, codigo: 'SIN_CONEXION', mensaje: SIN_CONEXION, detalles: [] };
     }
     const cuerpo = err.error as Partial<ErrorApi> | null;
+    // un 500 sin el formato de error de la API lo genera el proxy cuando la API esta apagada
+    if (err.status === 500 && !(cuerpo && typeof cuerpo === 'object' && typeof cuerpo.codigo === 'string')) {
+      return { status: err.status, codigo: 'SIN_CONEXION', mensaje: SIN_CONEXION, detalles: [] };
+    }
     if (cuerpo && typeof cuerpo === 'object' && typeof cuerpo.mensaje === 'string') {
       return {
         status: err.status,
