@@ -290,3 +290,26 @@ Recorrido automatico completo (levanta la API y `ng serve`, prueba con curl a tr
 La salida queda en `tcsw-ventas/docs/evidencia/verificar-p10-salida.txt`; los logs, en `/tmp/p10-api.log` y `/tmp/p10-web.log`.
 
 Limites: el proxy solo existe con `ng serve` (no hay despliegue de produccion); "sin conexion" esta probado con pruebas unitarias, no en el navegador; no se midio cobertura. Detalle en `tcsw-ventas/docs/indice-evidencias-P10.md`.
+
+## C03 - Integracion web
+
+Producto de C03: API (P09) y cliente Angular (P10) integrados, reutilizando el nucleo (ver `tcsw-ventas/docs/reuso-nucleo-C03.md`). Una sola orden lo comprueba todo.
+
+Requisitos: JDK 17, Maven, Docker con Compose, Node 22 con npm 10.9 y `curl`; archivo `tcsw-ventas/.env` con las variables de PostgreSQL (ver la seccion de P08); puertos 8080, 18080 y 4200 libres (el script se detiene si alguno responde).
+
+```bash
+cd tcsw-ventas
+./scripts/verificar-c03.sh              # 5 pasos; termina con "5 pasos, 0 fallas"
+./scripts/verificar-c03.sh --sin-docker # omite PostgreSQL y las pruebas de integracion (solo memoria)
+```
+
+Que hace, en orden: (1) PostgreSQL con `docker compose up --wait`; (2) `mvn clean verify -Pintegracion` (174 unitarias y 56 de integracion en la ultima corrida); (3) recorrido HTTP de la API en memoria (14 comprobaciones); (4) `npm install`, `ng build` y `ng test` del cliente (49 pruebas); (5) cliente y API por el proxy de Angular (9 comprobaciones). El resumen queda en `tcsw-ventas/docs/evidencia/verificar-c03-salida.txt` y los logs en `tcsw-ventas/target/c03-*.log`. Al terminar, PostgreSQL sigue arriba; para apagarlo: `docker compose down`.
+
+Para verlo en el navegador, en dos terminales:
+
+```bash
+cd tcsw-ventas && ./scripts/ejecutar-api.sh memoria      # API en 127.0.0.1:8080
+cd cliente-angular && npx ng serve                       # abrir http://localhost:4200
+```
+
+Limites: "sin conexion" en el navegador depende de la correccion del integrante 2 (ver el indice); sin pruebas de extremo a extremo con navegador real; el proxy solo existe con `ng serve`. Detalle y estados en `tcsw-ventas/docs/indice-evidencias-C03.md`.
