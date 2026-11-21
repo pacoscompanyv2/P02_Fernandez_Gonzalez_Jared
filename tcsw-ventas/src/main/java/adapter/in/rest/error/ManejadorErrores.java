@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.time.Instant;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 // UN solo lugar donde cualquier excepcion se vuelve un ErrorResponse con el mismo formato.
 // Extiende ResponseEntityExceptionHandler para atrapar tambien los errores del propio Spring MVC (405, 415, ruta inexistente...),
@@ -74,7 +73,7 @@ public class ManejadorErrores extends ResponseEntityExceptionHandler {
         List<ErrorResponse.Detalle> detalles = ex.getBindingResult().getFieldErrors().stream()
             .map(e -> new ErrorResponse.Detalle(e.getField(), e.getDefaultMessage()))
             .sorted(Comparator.comparing(ErrorResponse.Detalle::campo).thenComparing(ErrorResponse.Detalle::mensaje))
-            .collect(Collectors.toList());
+            .toList();
         return responder(HttpStatus.BAD_REQUEST, CodigoError.VALIDACION, "La solicitud no es valida", request, detalles, headers);
     }
 

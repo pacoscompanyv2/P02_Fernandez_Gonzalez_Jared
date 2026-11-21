@@ -13,7 +13,7 @@ public record VentaResponse(String folio, String estado, List<PartidaResponse> p
     public static VentaResponse from(Venta venta) {
         List<PartidaResponse> partidas = venta.getPartidas().stream()
             .map(PartidaResponse::from)
-            .collect(Collectors.toList());
+            .toList();
         return new VentaResponse(
             venta.getFolio(),
             venta.isCerrada() ? "CERRADA" : "ABIERTA",

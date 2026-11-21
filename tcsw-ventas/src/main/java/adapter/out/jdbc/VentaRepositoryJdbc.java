@@ -14,7 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-// adaptador de salida de ventas. guardar() es UNA transaccion: o se guarda todo (venta + partidas + existencias)
+// adaptador de salida de ventas. guardar() es UNA transaccion: o se guardan juntas la venta, sus partidas y las existencias
 // o no se guarda nada. ver ADR-006.
 public class VentaRepositoryJdbc implements VentaRepository {
 

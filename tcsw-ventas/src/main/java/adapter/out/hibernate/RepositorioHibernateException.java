@@ -28,8 +28,8 @@ public class RepositorioHibernateException extends RuntimeException {
         Throwable actual = causa;
         int profundidad = 0;
         while (actual != null && profundidad < 10) {
-            if (actual instanceof JDBCException) {
-                return ((JDBCException) actual).getSQLState();
+            if (actual instanceof JDBCException jdbc) {
+                return jdbc.getSQLState();
             }
             actual = actual.getCause();
             profundidad++;
