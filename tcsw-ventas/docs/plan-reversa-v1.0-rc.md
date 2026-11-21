@@ -15,7 +15,10 @@ Si tras desplegar `v1.0-rc` falla `verify-stack.sh`, o la API/cliente no levanta
 
 ## Prueba (automatizada)
 `./scripts/probar-reversa.sh` ejecuta los pasos 3 a 5 con `verificar-p09.sh` de `v0.3-web`, comprueba que el numero de ventas en PostgreSQL no cambia y vuelve a verificar el rc.
-Salida: `docs/evidencia/probar-reversa-salida.txt`. Estado: **PENDIENTE** hasta que se ejecute y se conserve esa salida.
+
+Estado: **VERIFICADO**. Resultado de la corrida: `REVERSA_VERIFICADA`; 21 comprobaciones de `v0.3-web` sin fallas; ventas en PostgreSQL: 3 antes y 3 despues;
+el rc volvio a pasar `verify-stack.sh --probar`. Salida: `docs/evidencia/probar-reversa-salida.txt` (commit `875ccf9`).
 
 ## Limites
 La reversa es de codigo e imagenes, no de datos creados por el rc (no hay migraciones). Una reversa en produccion no existe: no hay produccion.
+La prueba se hizo en la maquina del integrante 1, con datos sinteticos.

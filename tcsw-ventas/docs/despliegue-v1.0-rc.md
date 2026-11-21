@@ -4,7 +4,7 @@ Todo se ejecuta desde `tcsw-ventas/`. Requisitos: Docker con Compose, `curl`. Pa
 
 ## 1. Configurar (una vez)
 ```bash
-cp .env.example .env     # cambia POSTGRES_PASSWORD y TCSW_DB_PASSWORD (la misma clave); .env nunca se sube
+cp .env.example .env     # (si el 5432 de tu maquina esta ocupado, pon POSTGRES_PORT=5433) cambia POSTGRES_PASSWORD y TCSW_DB_PASSWORD (la misma clave); .env nunca se sube
 ```
 Puertos locales: API 8080 y cliente 4200 (cambian con `API_PORT` y `FRONTEND_PORT` en `.env`). Solo escuchan en 127.0.0.1.
 
@@ -13,7 +13,7 @@ Puertos locales: API 8080 y cliente 4200 (cambian con `API_PORT` y `FRONTEND_POR
 ./scripts/verify-module.sh M14        # script PROPIO; construye las imagenes, levanta db + api + frontend y prueba
 ```
 Equivale a `docker compose --profile stack up -d --build --wait` y luego `./scripts/verify-stack.sh --probar`.
-Resultado esperado: `STACK_VERIFICADO` y `MODULO_M14_VERIFICADO (script propio, no el oficial)`. Salida en `docs/evidencia/verify-stack-salida.txt`.
+Resultado esperado (obtenido en la maquina del integrante 1, VERIFICADO): `STACK_VERIFICADO` y `MODULO_M14_VERIFICADO (script propio, no el oficial)`. Salida en `docs/evidencia/verify-stack-salida.txt`.
 
 ## 3. Usar
 - Cliente: http://127.0.0.1:4200   - API: http://127.0.0.1:8080/api/v1/productos   - Contrato: http://127.0.0.1:8080/openapi.yaml
@@ -30,8 +30,8 @@ docker compose --profile stack down -v     # BORRA tambien los datos locales (si
 - Imagenes: `tcsw-ventas-api` y `tcsw-ventas-frontend` construidas con `Dockerfile.api` y `Dockerfile.frontend`.
 
 ## 6. Versiones fijas ("congela versiones")
-Spring Boot 3.2.4 (pom), Java 17, Hibernate 6.4.4.Final, PostgreSQL 16, Angular segun `package-lock.json` (se instala con `npm ci`),
-imagenes `maven:3.9.9-eclipse-temurin-17`, `eclipse-temurin:17.0.13_11-jre`, `node:22.12-alpine`, `nginx:1.27-alpine`.
+Spring Boot 3.2.4 (pom), Java 17, Hibernate 6.4.4.Final, PostgreSQL 16, Angular segun `package-lock.json` (el CI instala con `npm ci`; la imagen del cliente usa `npm install` con npm 10.9.8 fijo, ver notas de version),
+imagenes `maven:3.9.9-eclipse-temurin-17`, `eclipse-temurin:17.0.13_11-jre`, `node:22.12-bookworm-slim`, `nginx:1.27-alpine`.
 No se actualizo Spring ni Angular en este corte.
 
 ## 7. Limites declarados

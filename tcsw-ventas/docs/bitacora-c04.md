@@ -17,3 +17,17 @@ Equipo TCSW-E01. Trabaja el integrante 1; los integrantes 2 y 3 no participaron 
   - **Decision:** el Dockerfile usa `npm install` (respeta el lock y completa lo que falta). **Causa de fondo: NO determinada.** Riesgo declarado: el CI de GitHub usa `npm ci` y podria fallar igual; se vera en su primera corrida.
 - **Corrida 2: 7 fallas de 11, error del script (no de la API).** `verify-stack.sh` asumia una base nueva con P1, P2 y P3; el volumen local trae solo P1 (existencia 16), asi que las pruebas con P3 recibieron 404 `PRODUCTO_NO_ENCONTRADO`, respuesta correcta de la API. Correccion: el script elige el primer producto del catalogo con existencia.
 - **Corrida 3 (retest): 11 pruebas, 0 fallas, `STACK_VERIFICADO`.** Existencia de P1 de 16 a 15 tras el alta; 409 `FOLIO_DUPLICADO`, 400 `VALIDACION`, 404 `VENTA_NO_ENCONTRADA`; cliente por nginx llega a la API. Esta corrida fue con cambios sin commit; se repite tras el commit para que la evidencia lleve el hash.
+
+## Corridas, errores y retests (cierre del corte)
+Las fechas exactas de cada paso estan en `git log`; aqui va el hecho, la causa y la correccion.
+
+- **Imagen del cliente: `npm ci` falla dentro de Docker** (EUSAGE, faltan paquetes `@emnapi/*` en el lock). Hipotesis probadas: version de npm y base Debian; ninguna lo arreglo. Correccion: `npm install` en `Dockerfile.frontend`, con npm 10.9.8 fijo. Causa exacta: NO determinada. `npm ci` si pasa en el CI de GitHub.
+- **`verify-stack.sh`: 7 de 11 comprobaciones fallaron.** Hecho: el script suponia el producto P3 y el volumen local solo tenia P1 (la API siembra P1-P3 solo con catalogo vacio). Correccion: el script elige el primer producto con existencia mayor a 0. Retest: 11 comprobaciones, 0 fallas, `STACK_VERIFICADO` (commit `c29d45c`; evidencia en `426f16a`).
+- **Puerto 5432 ocupado en la maquina:** el compose usa `POSTGRES_PORT=5433` desde `.env`.
+- **Primer push del CI rechazado:** el token no tenia el permiso `workflow`; se genero otro con ese permiso. Ningun token se guarda en el repositorio.
+- **Prueba de reversa** (`probar-reversa.sh`): `REVERSA_VERIFICADA`, ventas 3 antes y 3 despues (commit `875ccf9`).
+- **Sonar:** analisis de `apicc4` y `frontcc4`; 34 hallazgos tratados (32 de la API y 2 del cliente): los corregidos salieron del parche y 20 de la API quedan abiertos y justificados uno por uno (ver `tratamiento-sonar-C04.md`) (commit `f5d6d32`).
+- **Error propio:** la evidencia "antes del parche" se habia atribuido a una corrida posterior al parche; se elimino y se documento solo como "antes" la evidencia ya subida de C03 (`9170d28` / `v0.3-web`).
+- **Error propio:** el tratamiento dejo un `import` sin usar en `VentaResponse` (S1128) y el Quality Gate de codigo nuevo quedo en Failed; se quito el import y el gate paso a OK (commit `e096c73`).
+- **Cobertura:** la API queda en 73.6 % (Sonar) / 74.3 % (JaCoCo); 176 de las 255 lineas sin cubrir son de las ventanas Swing. Se decide no perseguir el porcentaje y declarar el hueco (`riesgos-y-pruebas-C04.md`, commit `a11a998`).
+- **Estado de la prueba desde clon limpio:** PENDIENTE; se agrega aqui con su salida cuando se ejecute sobre `main`.
