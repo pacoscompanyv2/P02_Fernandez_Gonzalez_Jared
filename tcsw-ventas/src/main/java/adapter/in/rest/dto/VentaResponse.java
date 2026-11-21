@@ -5,7 +5,6 @@ import domain.Venta;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.stream.Collectors;
 
 // lo que la API muestra de una venta. "estado" es CERRADA o ABIERTA; "total" ya incluye el descuento del dominio.
 public record VentaResponse(String folio, String estado, List<PartidaResponse> partidas, BigDecimal total) {

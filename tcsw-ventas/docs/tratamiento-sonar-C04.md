@@ -29,6 +29,8 @@ Estados: CORREGIDO (hay cambio en el commit de tratamiento), JUSTIFICADO (no se 
 
 Resumen API: 12 CORREGIDOS, 20 JUSTIFICADOS (32).
 
+Hallazgo introducido por el propio tratamiento: el re-analisis (21-nov) reporto S1128 (import `java.util.stream.Collectors` sin usar) en VentaResponse:8, porque el cambio de S6204 dejo ese import. Se elimino. Con eso la condicion New Issues = 0 del Quality Gate de New Code deja de fallar; que asi sea queda PENDIENTE hasta el siguiente analisis.
+
 ## Cliente (2)
 | Regla | Donde | Decision | Razon |
 |---|---|---|---|
