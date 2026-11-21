@@ -12,7 +12,7 @@ Jared Fernandez Gonzalez (`pacoscompanyv2`). Trabajo realizado solo por el integ
 | Tratamiento de Sonar (12 archivos) y `tratamiento-sonar-C04.md` | commit `f5d6d32` | VERIFICADO |
 | Correccion del `import` sin usar (S1128) | commit `e096c73` | VERIFICADO (Quality Gate OK) |
 | Matriz de riesgos y pruebas | commit `a11a998` | VERIFICADO |
-| Documentos finales (README, notas, indice, bitacora, reversa, fronteras, despliegue) | commit por completar | PENDIENTE hasta subirlos |
+| Documentos finales (README, notas, indice, bitacora, reversa, fronteras, despliegue) | commit `1f8411d` y el del README (ver `git log`) | VERIFICADO (subidos) |
 | Issue / PR | issue #54, PR #55 | PR sin fusionar hasta el cierre |
 | Tag `v1.0-rc` | por crear | PENDIENTE |
 

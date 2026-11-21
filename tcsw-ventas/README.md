@@ -1,3 +1,5 @@
+> **Nota:** este README describe los modulos iniciales P01/M01 y P02/M02 (historico). Para construir, ejecutar y verificar la version vigente, ver `../README-reproduccion.md` (seccion C04) y `docs/indice-evidencias-C04.md`.
+
 # tcsw-ventas
 
 Prototipo de ventas — Experiencia educativa Tecnologias para la Construccion de Software.
