@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 // adaptador de salida: implementa el MISMO puerto que el de memoria, pero contra PostgreSQL.
-// todo el SQL va parametrizado (PreparedStatement): ningun dato del usuario se concatena en una consulta.
+// el SQL completo va parametrizado (PreparedStatement): ningun dato del usuario se concatena en una consulta.
 public class ProductoRepositoryJdbc implements ProductoRepository {
 
     private static final String SQL_GUARDAR =

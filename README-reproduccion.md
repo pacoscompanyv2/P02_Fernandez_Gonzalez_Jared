@@ -313,3 +313,55 @@ cd cliente-angular && npx ng serve                       # abrir http://localhos
 ```
 
 Con la API apagada, el catalogo debe mostrar `SIN_CONEXION`. Limites: no hay pruebas de extremo a extremo con navegador real; el proxy solo existe con `ng serve`; no se ejecuto Sonar en C03. Detalle y estados en `tcsw-ventas/docs/indice-evidencias-C03.md`.
+
+## C04 - Candidato de liberacion (`v1.0-rc`)
+
+Producto de C04: el candidato `v1.0-rc` (API + cliente Angular + PostgreSQL) empaquetado en contenedores, con CI, notas de version y plan de reversa. Todo se ejecuta desde `tcsw-ventas/`.
+
+Requisitos: Docker con Compose y `curl`. Para reconstruir y probar fuera de Docker (opcional): JDK 17, Maven 3.9 y Node 22. Puertos 8080 y 4200 libres (cambian con `API_PORT` y `FRONTEND_PORT` en `.env`); si el 5432 de tu maquina esta ocupado, usa `POSTGRES_PORT=5433` en `.env`.
+
+### Desde un clon limpio (un comando)
+
+```bash
+git clone https://github.com/pacoscompanyv2/P02_Fernandez_Gonzalez_Jared
+cd P02_Fernandez_Gonzalez_Jared/tcsw-ventas
+git checkout v1.0-rc
+cp .env.example .env        # pon la misma clave en POSTGRES_PASSWORD y TCSW_DB_PASSWORD; .env nunca se sube
+./scripts/verify-module.sh M14
+```
+
+Construye las imagenes, levanta PostgreSQL + API + cliente y prueba (11 comprobaciones). Resultado esperado: `STACK_VERIFICADO` y `MODULO_M14_VERIFICADO (script propio, no el oficial)`. La salida queda en `tcsw-ventas/docs/evidencia/verify-stack-salida.txt`. Cliente en http://127.0.0.1:4200, API en http://127.0.0.1:8080/api/v1/productos, contrato en `/openapi.yaml`.
+
+Apagar: `docker compose --profile stack down` (conserva los datos) o `docker compose --profile stack down -v` (los borra; son sinteticos).
+
+### Pruebas de la API y del cliente
+
+```bash
+docker compose up -d --wait db
+set -a; . ./.env; set +a
+mvn -B clean verify -Pintegracion        # 174 unitarias + 56 de integracion, 0 fallas
+cd ../cliente-angular && npm ci && npx ng test --watch=false     # 51 pruebas
+```
+
+### Reversa a la version anterior
+
+```bash
+./scripts/probar-reversa.sh              # baja el rc, verifica v0.3-web en un worktree aparte, vuelve al rc; termina con REVERSA_VERIFICADA
+```
+
+Antes de correr `./scripts/verificar-c03.sh` baja el stack (`docker compose --profile stack down`): ese script exige libres los puertos 8080, 18080 y 4200.
+
+### Estado de verificacion (C04)
+
+| Elemento | Estado |
+|---|---|
+| Stack en Docker, `verify-stack.sh` (11 comprobaciones, 0 fallas) | VERIFICADO |
+| Pruebas: 174 + 56 (API) y 51 (cliente), 0 fallas | VERIFICADO |
+| CI en GitHub Actions (jobs `api`, `cliente`, `stack`) | VERIFICADO (PR #55) |
+| Sonar: API Quality Gate OK (73.6 %, 20 issues justificados); cliente OK (97.2 %) | VERIFICADO |
+| Reversa a `v0.3-web` | VERIFICADO |
+| Reproduccion desde clon limpio | VERIFICADO solo cuando exista su salida en `docs/evidencia/`; ver `indice-evidencias-C04.md` |
+| Interfaz Swing (ventanas) | sin pruebas automaticas (declarado) |
+| `verify-module.sh` oficial de la materia | NO_VERIFICADO (no disponible; el script es propio y solo cubre M14) |
+
+Documentos: `tcsw-ventas/docs/indice-evidencias-C04.md`, `notas-version-v1.0-rc.md`, `despliegue-v1.0-rc.md`, `plan-reversa-v1.0-rc.md`, `riesgos-y-pruebas-C04.md`, `tratamiento-sonar-C04.md`, `matriz-fronteras-C04.md`, `bitacora-c04.md` y `contribuciones/integrante-1-C04.md`.

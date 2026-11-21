@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-// adaptador de entrada: traduce HTTP <-> casos de uso. No tiene reglas de negocio: todo lo decide VentasFacade.
+// adaptador de entrada: traduce HTTP <-> casos de uso. No tiene reglas de negocio: cada decision la toma VentasFacade.
 @RestController
 @RequestMapping(path = "/api/v1/productos", produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProductoController {
@@ -25,7 +24,7 @@ public class ProductoController {
 
     @GetMapping
     public List<ProductoResponse> listar() {
-        return facade.listarProductos().stream().map(ProductoResponse::from).collect(Collectors.toList());
+        return facade.listarProductos().stream().map(ProductoResponse::from).toList();
     }
 
     @GetMapping("/{codigo}")

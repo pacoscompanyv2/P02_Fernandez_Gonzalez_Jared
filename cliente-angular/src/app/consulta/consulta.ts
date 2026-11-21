@@ -11,7 +11,7 @@ import { VentasService } from '../core/ventas.service';
     <h2>Consulta de venta</h2>
     <label>
       Folio
-      <input type="text" class="folio-entrada" [value]="folio()" (input)="alEscribir($event)" (keydown.enter)="buscar()" maxlength="30" />
+      <input type="text" class="folio-entrada" [value]="folioEscrito()" (input)="alEscribir($event)" (keydown.enter)="buscar()" maxlength="30" />
     </label>
     <button type="button" class="buscar" [disabled]="buscando()" (click)="buscar()">Buscar</button>
 
@@ -46,27 +46,27 @@ export class Consulta implements OnInit {
   private readonly ventasApi = inject(VentasService);
 
   // el folio puede llegar por la URL (?folio=...) desde la pantalla de venta: app.config usa withComponentInputBinding()
-  readonly folioInicial = input<string>('', { alias: 'folio' });
+  readonly folio = input<string>('');
 
-  readonly folio = signal('');
+  readonly folioEscrito = signal('');
   readonly buscando = signal(false);
   readonly venta = signal<VentaResponse | null>(null);
   readonly error = signal<ErrorVisible | null>(null);
 
   ngOnInit(): void {
-    const inicial = this.folioInicial();
+    const inicial = this.folio();
     if (inicial) {
-      this.folio.set(inicial);
+      this.folioEscrito.set(inicial);
       this.buscar();
     }
   }
 
   alEscribir(evento: Event): void {
-    this.folio.set((evento.target as HTMLInputElement).value);
+    this.folioEscrito.set((evento.target as HTMLInputElement).value);
   }
 
   buscar(): void {
-    const folio = this.folio().trim();
+    const folio = this.folioEscrito().trim();
     this.venta.set(null);
     if (!folio) {
       this.error.set({ status: -1, codigo: 'FOLIO_VACIO', mensaje: 'Escribe el folio de la venta.', detalles: [] });

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.List;
 
-// forma UNICA de todo error de la API (400, 404, 405, 409, 415, 500...). Ver openapi.yaml -> components/schemas/Error.
+// forma UNICA de cualquier error de la API (400, 404, 405, 409, 415, 500...). Ver openapi.yaml -> components/schemas/Error.
 //   codigo   : texto estable para programas (VALIDACION, PRODUCTO_NO_ENCONTRADO...)
 //   mensaje  : texto para personas
 //   detalles : solo en errores de validacion, uno por campo
