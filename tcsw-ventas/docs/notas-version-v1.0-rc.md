@@ -26,4 +26,5 @@ Base: `v0.3-web` (C03). Equipo TCSW-E01. Estado de cada afirmacion segun `indice
 - 20 hallazgos de mantenibilidad de Sonar siguen abiertos por decision documentada (tocan el nucleo compartido, la persistencia o firmas de Spring).
 - `verify-module.sh` oficial de la materia: no disponible; se uso un script propio que solo cubre M14.
 - Dentro de la imagen del cliente se usa `npm install` y no `npm ci` (con `npm ci` la construccion de la imagen fallo por dependencias opcionales ausentes del lock; la causa exacta no se determino). `npm ci` si funciona en el CI de GitHub.
-- Reproduccion desde un clon limpio y analisis final de Sonar sobre el commit del tag: PENDIENTES hasta ejecutarse.
+- Reproduccion desde un clon limpio: VERIFICADA sobre `main` (`1850ac1`, `docs/evidencia/clon-limpio-salida.txt`), con la cache de Docker de la maquina del integrante 1 (no es una maquina sin cache).
+- Analisis final de Sonar sobre el commit del tag: PENDIENTE hasta ejecutarse.

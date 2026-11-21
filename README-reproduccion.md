@@ -360,7 +360,7 @@ Antes de correr `./scripts/verificar-c03.sh` baja el stack (`docker compose --pr
 | CI en GitHub Actions (jobs `api`, `cliente`, `stack`) | VERIFICADO (PR #55) |
 | Sonar: API Quality Gate OK (73.6 %, 20 issues justificados); cliente OK (97.2 %) | VERIFICADO |
 | Reversa a `v0.3-web` | VERIFICADO |
-| Reproduccion desde clon limpio | VERIFICADO solo cuando exista su salida en `docs/evidencia/`; ver `indice-evidencias-C04.md` |
+| Reproduccion desde clon limpio (`main` `1850ac1`, 11 comprobaciones, 0 fallas) | VERIFICADO (`tcsw-ventas/docs/evidencia/clon-limpio-salida.txt`; con cache de Docker previo) |
 | Interfaz Swing (ventanas) | sin pruebas automaticas (declarado) |
 | `verify-module.sh` oficial de la materia | NO_VERIFICADO (no disponible; el script es propio y solo cubre M14) |
 

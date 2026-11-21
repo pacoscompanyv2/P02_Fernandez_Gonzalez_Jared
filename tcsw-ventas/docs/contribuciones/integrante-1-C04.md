@@ -14,6 +14,7 @@ Jared Fernandez Gonzalez (`pacoscompanyv2`). Trabajo realizado solo por el integ
 | Matriz de riesgos y pruebas | commit `a11a998` | VERIFICADO |
 | Documentos finales (README, notas, indice, bitacora, reversa, fronteras, despliegue) | commit `1f8411d` y el del README (ver `git log`) | VERIFICADO (subidos) |
 | Issue / PR | issue #54, PR #55 | PR sin fusionar hasta el cierre |
+| Prueba de clon limpio sobre `main` (`1850ac1`) | `docs/evidencia/clon-limpio-salida.txt` | VERIFICADO |
 | Tag `v1.0-rc` | por crear | PENDIENTE |
 
 Decisiones y errores se explican en `bitacora-c04.md`. Las referencias de commit se pueden comprobar con `git log` y `git show <hash>`.
