@@ -41,7 +41,7 @@ public class RegistrarVentaService implements RegistrarVentaUseCase {
 
     @Override
     public Venta registrar(String folio, List<ItemVenta> items) {
-        // se valida TODO antes de tocar el inventario: si algo falla, no se descuenta nada
+        // se valida cada item antes de tocar el inventario: si algo falla, no se descuenta nada
         Map<String, Producto> encontrados = validarItems(items);
 
         Venta venta = new Venta(folio, descuento);

@@ -21,10 +21,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 
-// adaptador de entrada de ventas: HTTP <-> VentasFacade. La forma del JSON se valida en el DTO (@Valid);
-// existencias, productos y descuento los decide el caso de uso. Los errores los traduce ManejadorErrores.
+// adaptador de entrada de ventas: HTTP <-> VentasFacade. La forma del JSON se valida en el DTO con la anotacion Valid.
+// Existencias, productos y descuento los decide el caso de uso, y los errores los traduce ManejadorErrores.
 @RestController
 @RequestMapping(path = "/api/v1/ventas", produces = MediaType.APPLICATION_JSON_VALUE)
 public class VentaController {
@@ -44,7 +43,7 @@ public class VentaController {
         }
         List<ItemVenta> items = solicitud.items().stream()
             .map(VentaController::aItem)
-            .collect(Collectors.toList());
+            .toList();
         Venta venta = facade.registrarVenta(folio, items);
         URI ubicacion = ServletUriComponentsBuilder.fromCurrentRequest()
             .path("/{folio}")

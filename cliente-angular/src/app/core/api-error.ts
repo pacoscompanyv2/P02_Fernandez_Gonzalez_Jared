@@ -11,15 +11,19 @@ export interface ErrorVisible {
 
 const SIN_CONEXION = 'No se pudo conectar con la API. Revisa que este en marcha en el puerto 8080.';
 
+// 0 = sin red; 502/503/504 = el proxy de Angular no alcanzo la API; un 500 sin el formato de error de la API
+// lo genera el proxy cuando la API esta apagada
+function esSinConexion(err: HttpErrorResponse, cuerpo: Partial<ErrorApi> | null): boolean {
+  if (err.status === 0 || err.status === 502 || err.status === 503 || err.status === 504) {
+    return true;
+  }
+  return err.status === 500 && !(cuerpo && typeof cuerpo === 'object' && typeof cuerpo.codigo === 'string');
+}
+
 export function describirError(err: unknown): ErrorVisible {
   if (err instanceof HttpErrorResponse) {
-    // 0 = sin red; 502/503/504 = el proxy de Angular no alcanzo la API
-    if (err.status === 0 || err.status === 502 || err.status === 503 || err.status === 504) {
-      return { status: err.status, codigo: 'SIN_CONEXION', mensaje: SIN_CONEXION, detalles: [] };
-    }
     const cuerpo = err.error as Partial<ErrorApi> | null;
-    // un 500 sin el formato de error de la API lo genera el proxy cuando la API esta apagada
-    if (err.status === 500 && !(cuerpo && typeof cuerpo === 'object' && typeof cuerpo.codigo === 'string')) {
+    if (esSinConexion(err, cuerpo)) {
       return { status: err.status, codigo: 'SIN_CONEXION', mensaje: SIN_CONEXION, detalles: [] };
     }
     if (cuerpo && typeof cuerpo === 'object' && typeof cuerpo.mensaje === 'string') {

@@ -1,0 +1,19 @@
+# API de ventas (Spring Boot 3.2.4, Java 17) en contenedor. Contexto de construccion: tcsw-ventas/
+# Construir/levantar:  docker compose --profile stack up -d --build --wait   (ver scripts/verify-stack.sh)
+# Versiones de imagen fijadas (C04, "congela versiones"); no se actualiza Spring ni Java.
+FROM maven:3.9.9-eclipse-temurin-17 AS build
+WORKDIR /src
+COPY pom.xml .
+RUN mvn -B -q dependency:go-offline
+COPY src ./src
+# las pruebas ya corren en verificar-c03.sh / CI; aqui solo se construye el artefacto ejecutable
+RUN mvn -B -q -DskipTests package spring-boot:repackage \
+ && cp target/tcsw-ventas-1.0.0.jar /app.jar
+
+FROM eclipse-temurin:17.0.13_11-jre
+RUN useradd --system --uid 10001 --no-create-home tcsw
+COPY --from=build /app.jar /app/tcsw-ventas.jar
+USER tcsw
+EXPOSE 8080
+# server.address=127.0.0.1 en application.properties: en el contenedor se abre a 0.0.0.0 con SERVER_ADDRESS (compose)
+ENTRYPOINT ["java", "-jar", "/app/tcsw-ventas.jar"]

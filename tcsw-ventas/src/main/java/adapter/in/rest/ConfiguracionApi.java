@@ -21,16 +21,17 @@ import org.springframework.context.annotation.Configuration;
 public class ConfiguracionApi {
 
     private static final Logger LOG = LoggerFactory.getLogger(ConfiguracionApi.class);
+    private static final String MEMORIA = "memoria";
 
     @Bean
     public VentasFacade ventasFacade(@Value("${tcsw.almacenamiento:auto}") String modo) {
         ProductoRepository productos;
         VentaRepository ventas;
         String almacenamiento;
-        if ("memoria".equalsIgnoreCase(modo)) {
+        if (MEMORIA.equalsIgnoreCase(modo)) {
             productos = new ProductoRepositoryEnMemoria();
             ventas = new VentaRepositoryEnMemoria();
-            almacenamiento = "memoria";
+            almacenamiento = MEMORIA;
         } else if (RepositoriosHibernateFactory.seleccionado()) {
             productos = RepositoriosHibernateFactory.productos();
             ventas = RepositoriosHibernateFactory.ventas();
@@ -38,7 +39,7 @@ public class ConfiguracionApi {
         } else {
             productos = RepositoriosFactory.productos();
             ventas = RepositoriosFactory.ventas();
-            almacenamiento = RepositoriosFactory.usaPostgres() ? "PostgreSQL (JDBC)" : "memoria";
+            almacenamiento = RepositoriosFactory.usaPostgres() ? "PostgreSQL (JDBC)" : MEMORIA;
         }
         LOG.info("Almacenamiento: {}", almacenamiento);
         VentasFacade facade = new VentasFacade(productos, ventas);
